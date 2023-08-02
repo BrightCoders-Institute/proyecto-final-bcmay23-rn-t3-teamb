@@ -1,37 +1,21 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { LoginLayout, MainLayout } from './src/navigation';
 
-const MainStack = createBottomTabNavigator();
-const LoginStack = createNativeStackNavigator();
-
-function LoginLayout() {
-  return (
-    <LoginStack.Navigator>
-      {/* <LoginStack.Screen name="Main" component={LoginHomeScreen} /> */}
-      {/* <LoginStack.Screen name="SignIn" component={SignInScreen} /> */}
-      {/* <LoginStack.Screen name="SignUp" component={SignUpScreen} /> */}
-    </LoginStack.Navigator>
-  )
-}
-
-function MainLayout() {
-  return (
-    <MainStack.Navigator>
-      {/* <MainStack.Screen name="Home" component={HomeScreen} /> */}
-      {/* <MainStack.Screen name="Settings" component={SettingsScreen} /> */}
-    </MainStack.Navigator>
-  );
-}
+const Stack = createNativeStackNavigator();
 
 function App(){
   return (
     <NavigationContainer>
-      <MainStack.Navigator>
-        {/* <MainStack.Screen name='test' component={test}/> */}
-        <MainStack.Screen name='Main' component={MainLayout} options={{headerShown: false}}/>
-      </MainStack.Navigator>
+      <Stack.Navigator>
+        {
+          true /* Replace using Firebase, only if the user was log their session */
+          ? <Stack.Screen name='Login' component={LoginLayout} options={{headerShown: false}}/> 
+          : <Stack.Screen name='Main' component={MainLayout} options={{headerShown: false}}/>
+        }
+        
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
