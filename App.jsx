@@ -1,15 +1,22 @@
 import React from 'react';
-import {SafeAreaView, Text, useColorScheme} from 'react-native';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { LoginLayout, MainLayout } from './src/navigation';
+
+const Stack = createNativeStackNavigator();
+
+function App(){
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <Text>Hola Mundo</Text>
-    </SafeAreaView>
+    <NavigationContainer>
+      <Stack.Navigator>
+        {
+          false /* Replace using Firebase, only if the user was log their session */
+          ? <Stack.Screen name='Login' component={LoginLayout} options={{headerShown: false}}/> 
+          : <Stack.Screen name='Main' component={MainLayout} options={{headerShown: false}}/>
+        }
+        
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
