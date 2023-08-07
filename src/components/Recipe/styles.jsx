@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 15,
-    height: 225,
+    height: 200,
     width: containerWidth, 
     backgroundColor: "#000814",
     marginHorizontal: 10, 
@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
   },
   image: {
     width: '94%', 
-    height: 140,
+    height: 120,
     borderRadius: 15,
     marginTop: 6,
     marginHorizontal: 5
