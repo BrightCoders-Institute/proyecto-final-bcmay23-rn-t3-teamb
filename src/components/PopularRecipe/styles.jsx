@@ -1,6 +1,6 @@
 import {StyleSheet, Dimensions } from 'react-native';
 const { width } = Dimensions.get('window');
-const containerWidth = width * 0.9; // Adjust the width percentage as needed
+const containerWidth = width * 0.8; // Adjust the width percentage as needed
 export const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
