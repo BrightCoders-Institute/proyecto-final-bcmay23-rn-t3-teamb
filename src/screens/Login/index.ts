@@ -1,3 +1,3 @@
 export {MainScreen} from "./MainScreen";
-export {SignInScreen} from "./SignInScreen"
+export {SignInScreen} from "./SignIn/SignInScreen"
 export {SignUpScreen} from "./SignUpScreen"

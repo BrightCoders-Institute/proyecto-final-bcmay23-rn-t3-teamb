@@ -3,7 +3,7 @@ const {width, height} = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
   container: {
-    gap: 8
+    gap: 10,
   },
   input: {
     width: width * 0.7,
