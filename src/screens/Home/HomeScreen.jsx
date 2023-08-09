@@ -90,12 +90,7 @@ export const HomeScreen = () => {
             <View style={styles.row}>
               {data.map((item, index) => (
                 <View key={item.id} style={styles.column}>
-                  <ShowRecipe
-                    imageSource={item.imageSource}
-                    recipeName={item.recipeName}
-                    favoriteNum={item.favoriteNum}
-                    servings={item.servings}
-                  />
+                  <ShowRecipe recipeData={item} />
                 </View>
               ))}
             </View>
