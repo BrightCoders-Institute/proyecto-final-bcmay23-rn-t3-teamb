@@ -37,9 +37,6 @@ export const styles = StyleSheet.create({
       paddingBottom: 5
     },
     outerContainer: {
-      borderWidth: 2,
-      borderColor: 'black',
-      borderRadius: 15,
       height: 430, 
       margin: 20,
     },
