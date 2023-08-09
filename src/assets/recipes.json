@@ -2,10 +2,51 @@
       {
         "id": "1",
         "imageSource": "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg?resize=1200:*",
-        "recipeName": "Classic Hamburger",
+        "recipeName": "Classic Hamburger Hamburger Hamburger Hamburger",
         "favoriteNum": 10,
         "servings": 4,
-        "tags": ["vegan", "main course"]
+        "tags": ["vegan", "main course"],
+        "description": "Perfectly seasoned juicy homemade hamburgers. This easy recipe only needs a few ingredients ingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredients ingredientsingredientsingredientsingredients ingredients ingredientsv .",
+        "prepTime": "2:30",
+        "calories": "700cal",
+        "ingredients": [
+          {
+              "name": "Pepperoni",
+              "quantity": 1,
+              "unit": "slice"
+          },
+          {
+              "name": "Mozzarella",
+              "quantity": 1,
+              "unit": "cup"
+          },
+          {
+              "name": "Tomato Sauce",
+              "quantity": 1,
+              "unit": "cup"
+          },
+          {
+              "name": "Dough",
+              "quantity": 1,
+              "unit": "cup"
+          },
+          {
+              "name": "Cheese",
+              "quantity": 1,
+              "unit": "cup"
+          }
+      ],
+      "instructions": [
+        {
+          "instruction": "1.-lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum"
+        },
+        {
+          "instruction": "2.-lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum"
+        },
+        {
+          "instruction": "3.-lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum"
+        }
+      ]
       },
       {
         "id": "2",
@@ -13,7 +54,48 @@
         "recipeName": "Recipe 2",
         "favoriteNum": 8,
         "servings": 3,
-        "tags": ["main course", "vegan"]
+        "tags": ["main course", "vegan"],
+        "description": "Perfectly seasoned juicy homemade hamburgers. This easy recipe only needs a few ingredients ingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredients ingredientsingredientsingredientsingredients ingredients ingredientsv .",
+        "prepTime": "2:30",
+        "calories": "700cal",
+        "ingredients": [
+          {
+              "name": "Pepperoni",
+              "quantity": 1,
+              "unit": "slice"
+          },
+          {
+              "name": "Mozzarella",
+              "quantity": 1,
+              "unit": "cup"
+          },
+          {
+              "name": "Tomato Sauce",
+              "quantity": 1,
+              "unit": "cup"
+          },
+          {
+              "name": "Dough",
+              "quantity": 1,
+              "unit": "cup"
+          },
+          {
+              "name": "Cheese",
+              "quantity": 1,
+              "unit": "cup"
+          }
+      ],
+      "instructions": [
+        {
+          "instruction": "1.-lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum"
+        },
+        {
+          "instruction": "2.-lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum"
+        },
+        {
+          "instruction": "3.-lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum"
+        }
+      ]
       },
       {
         "id": "3",
@@ -21,7 +103,48 @@
         "recipeName": "Recipe 3",
         "favoriteNum": 12,
         "servings": 6,
-        "tags": ["main course"]
+        "tags": ["main course"],
+        "description": "Perfectly seasoned juicy homemade hamburgers. This easy recipe only needs a few ingredients ingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredients ingredientsingredientsingredientsingredients ingredients ingredientsv .",
+        "prepTime": "2:30",
+        "calories": "700cal",
+        "ingredients": [
+          {
+              "name": "Pepperoni",
+              "quantity": 1,
+              "unit": "slice"
+          },
+          {
+              "name": "Mozzarella",
+              "quantity": 1,
+              "unit": "cup"
+          },
+          {
+              "name": "Tomato Sauce",
+              "quantity": 1,
+              "unit": "cup"
+          },
+          {
+              "name": "Dough",
+              "quantity": 1,
+              "unit": "cup"
+          },
+          {
+              "name": "Cheese",
+              "quantity": 1,
+              "unit": "cup"
+          }
+      ],
+      "instructions": [
+        {
+          "instruction": "1.-lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum"
+        },
+        {
+          "instruction": "2.-lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum"
+        },
+        {
+          "instruction": "3.-lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum"
+        }
+      ]
       },
       {
         "id": "4",
@@ -29,7 +152,48 @@
         "recipeName": "Recipe 4",
         "favoriteNum": 7,
         "servings": 2,
-        "tags": ["vegan"]
+        "tags": ["vegan"],
+        "description": "Perfectly seasoned juicy homemade hamburgers. This easy recipe only needs a few ingredients ingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredientsingredients ingredientsingredientsingredientsingredients ingredients ingredientsv .",
+        "prepTime": "2:30",
+        "calories": "700cal",
+        "ingredients": [
+          {
+              "name": "Pepperoni",
+              "quantity": 1,
+              "unit": "slice"
+          },
+          {
+              "name": "Mozzarella",
+              "quantity": 1,
+              "unit": "cup"
+          },
+          {
+              "name": "Tomato Sauce",
+              "quantity": 1,
+              "unit": "cup"
+          },
+          {
+              "name": "Dough",
+              "quantity": 1,
+              "unit": "cup"
+          },
+          {
+              "name": "Cheese",
+              "quantity": 1,
+              "unit": "cup"
+          }
+      ],
+      "instructions": [
+        {
+          "instruction": "1.-lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum"
+        },
+        {
+          "instruction": "2.-lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum"
+        },
+        {
+          "instruction": "3.-lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum"
+        }
+      ]
       },
       {
         "id": "5",
