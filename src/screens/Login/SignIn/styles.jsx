@@ -51,7 +51,7 @@ export const styles = StyleSheet.create({
   top: {
     alignItems: 'center',
     gap: 8,
-    marginBottom: 60,
+    marginBottom: 50,
   },
   input: {
     width: width * 0.7,
@@ -75,7 +75,9 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 8.
   },
-  
-
+  icon: {
+    width: 100,
+    height: 100,
+  },
 
 });

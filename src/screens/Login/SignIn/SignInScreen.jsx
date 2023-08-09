@@ -1,8 +1,10 @@
 import React from 'react';
-import {Text, View, Button, Pressable, TextInput} from 'react-native';
+import {Text, View, Image, Pressable, TextInput} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {styles} from './styles';
 import {Input, SeparationComponent} from '../../../components';
+
+const image = require('../../../images/icon.jpg');
 
 export const SignInScreen = ({navigation}) => {
   return (
@@ -10,7 +12,7 @@ export const SignInScreen = ({navigation}) => {
       {/* top */}
       <View style={styles.top}>
         <View style={styles.titleContainer}>
-          <Ionicons name={'pizza-outline'} size={32} color={'#000'} />
+          <Image source={image} style={styles.icon} />
           <Text style={styles.title}>Gastro-Lab</Text>
         </View>
         <Text style={styles.subtitle}>Cook without limits</Text>
