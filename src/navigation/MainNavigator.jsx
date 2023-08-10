@@ -1,8 +1,9 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { AddRecipe, FavoritesScreen, ProfileScreen, SearchScreen } from '../screens/Main';
+import { AddRecipe, FavoritesScreen, SearchScreen } from '../screens/Main';
 import { HomeScreen } from '../screens/Home/HomeScreen';
 import { FavoriteScreen } from '../screens/Favorite/FavoriteScreen';
+import { ProfileScreen } from '../screens/Profile/ProfileScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const MainStack = createBottomTabNavigator();
