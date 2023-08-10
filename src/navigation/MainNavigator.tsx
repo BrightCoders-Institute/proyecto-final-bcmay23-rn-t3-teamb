@@ -1,6 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { AddRecipe, FavoritesScreen, SearchScreen } from '../screens/Main';
+import { AddRecipe, SearchScreen } from '../screens/Main';
 import { HomeScreen } from '../screens/Home/HomeScreen';
 import { FavoriteScreen } from '../screens/Favorite/FavoriteScreen';
 import { ProfileScreen } from '../screens/Profile/ProfileScreen';
@@ -13,7 +13,7 @@ export function MainLayout() {
     <MainStack.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
-          let iconName;
+          let iconName: string = '';
 
           if (route.name === 'Search') {
             iconName = focused ? 'search' : 'search-outline';
