@@ -2,6 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { AddRecipe, FavoritesScreen, ProfileScreen, SearchScreen } from '../screens/Main';
 import { HomeScreen } from '../screens/Home/HomeScreen';
+import { FavoriteScreen } from '../screens/Favorite/FavoriteScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const MainStack = createBottomTabNavigator();
@@ -35,7 +36,7 @@ export function MainLayout() {
       <MainStack.Screen name="Search" component={SearchScreen} options={{headerShown: false}} />
       <MainStack.Screen name="Add" component={AddRecipe} options={{headerShown: false}} />
       <MainStack.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
-      <MainStack.Screen name="Favorites" component={FavoritesScreen} options={{headerShown: false}} />
+      <MainStack.Screen name="Favorites" component={FavoriteScreen} options={{headerShown: false}} />
       <MainStack.Screen name="Profile" component={ProfileScreen} options={{headerShown: false}}/>
     </MainStack.Navigator>
   );
