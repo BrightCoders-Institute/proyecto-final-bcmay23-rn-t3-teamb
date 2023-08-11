@@ -5,29 +5,29 @@ import { HomeScreen } from '../screens/Home/HomeScreen';
 import { FavoriteScreen } from '../screens/Favorite/FavoriteScreen';
 import { ProfileScreen } from '../screens/Profile/ProfileScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useRoute } from '@react-navigation/native';
 
 const MainStack = createBottomTabNavigator();
+
+const icons = {
+  'Search': {default: 'search-outline', focus: 'search'},
+  'Add': {default: 'add-circle-outline', focus: 'add-circle'},
+  'Favorites': {default: 'heart-outline', focus: 'heart'},
+  'Home': {default: 'home-outline', focus: 'home'},
+  'Profile': {default: 'person-outline', focus: 'person'},
+}
 
 export function MainLayout() {
   return (
     <MainStack.Navigator
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
-          let iconName: string = '';
+        tabBarIcon: ({ focused, color }) => {
+          let routName = route.name as keyof typeof icons;
+          let iconName: string = focused 
+            ? icons[routName].focus 
+            : icons[routName].default;
 
-          if (route.name === 'Search') {
-            iconName = focused ? 'search' : 'search-outline';
-          } else if (route.name === 'Add') {
-            iconName = focused ? 'add-circle' : 'add-circle-outline';
-          } else if (route.name === 'Favorites') {
-            iconName = focused ? 'heart' : 'heart-outline';
-          } else if (route.name === 'Profile') {
-            iconName = focused ? 'person' : 'person-outline';
-          } else if (route.name === 'Home') {
-            iconName = focused ? 'home' : 'home-outline';
-          }
 
-          // You can return any component that you like here!
           return <Ionicons name={iconName} size={24} color={color} />;
         },
         tabBarActiveTintColor: '#003566',
