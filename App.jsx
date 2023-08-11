@@ -10,10 +10,9 @@ function App(){
     <NavigationContainer>
       <Stack.Navigator>
         {
-          //true /* Replace using Firebase, only if the user was log their session */
-          //? <Stack.Screen name='Login' component={LoginLayout} options={{headerShown: false}}/> 
-          //: <Stack.Screen name='Main' component={MainLayout} options={{headerShown: false}}/>
-          <Stack.Screen name='Main' component={MainLayout} options={{headerShown: false}}/>
+          true /* Replace using Firebase, only if the user was log their session */
+          ? <Stack.Screen name='Login' component={LoginLayout} options={{headerShown: false}}/> 
+          : <Stack.Screen name='Main' component={MainLayout} options={{headerShown: false}}/>
         }
         
       </Stack.Navigator>

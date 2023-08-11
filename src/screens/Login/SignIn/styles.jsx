@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     width: width,
     backgroundColor: '#f2f2f2',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
     alignItems: 'center',
   },
   icon: {
@@ -51,7 +51,6 @@ export const styles = StyleSheet.create({
   top: {
     alignItems: 'center',
     gap: 8,
-    marginBottom: 50,
   },
   input: {
     width: width * 0.7,
@@ -79,5 +78,16 @@ export const styles = StyleSheet.create({
     width: 100,
     height: 100,
   },
+  bottom: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 4,
+    marginTop: 5,
+    fontSize: 12
+  },
+  link: {
+    color: "#003566",
+    fontWeight: 'bold',
+  }
 
 });
