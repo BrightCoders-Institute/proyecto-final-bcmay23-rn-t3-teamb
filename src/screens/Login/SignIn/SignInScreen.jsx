@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, Image, Pressable, TextInput} from 'react-native';
+import {Text, View, Image, Pressable, TouchableHighlight} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {styles} from './styles';
 import {Input, SeparationComponent} from '../../../components';
@@ -35,7 +35,6 @@ export const SignInScreen = ({navigation}) => {
           style={({pressed}) => [
             {
               backgroundColor: pressed ? '#ffd60a' : '#003566',
-              marginBottom: 20,
               marginTop: 20,
             },
             styles.button,
@@ -60,7 +59,6 @@ export const SignInScreen = ({navigation}) => {
           style={({pressed}) => [
             {
               backgroundColor: pressed ? '#003566' : '#ffd60a',
-              marginTop: 20
             },
             styles.button,
           ]}>
@@ -78,9 +76,12 @@ export const SignInScreen = ({navigation}) => {
           )}
         </Pressable>
       </View>
-      
-
-
+      <View style={styles.bottom}>
+        <Text>Don’t have an account?</Text>
+        <TouchableHighlight onPress={() => navigation.navigate('SignUp')}>
+          <Text style={styles.link}>Register</Text>
+        </TouchableHighlight>
+      </View>
     </View>
   );
 };
