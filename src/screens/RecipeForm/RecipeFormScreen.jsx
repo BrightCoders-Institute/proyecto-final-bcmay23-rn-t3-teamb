@@ -8,7 +8,7 @@ import { RecipeFormNavigator } from "../../navigation/RecipeFormNavigator";
 export const RecipeFormScreen = () => {
     return (
         <View>
-            <Definition/>
+            <Finish/>
         </View>
     );
 }
