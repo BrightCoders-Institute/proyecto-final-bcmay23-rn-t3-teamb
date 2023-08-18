@@ -7,15 +7,18 @@ export const styles = StyleSheet.create({
     flex: 1,
     width: width,
     backgroundColor: '#f2f2f2',
-    justifyContent: 'space-evenly',
+    justifyContent: 'center',
     alignItems: 'center',
   },
-  icon: {
-    position: 'absolute',
-    width: 64,
-    height: 64,
-    bottom: -64,
-    left: width * 0.5 - 64,
+  top: {
+    alignItems: 'center',
+    marginBottom: 30,
+  },
+  titleContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   title: {
     fontSize: 32,
@@ -25,44 +28,8 @@ export const styles = StyleSheet.create({
   subtitle: {
     color: '#000814',
   },
-  button: {
-    width: width * 0.5,
-    borderWidth: 1,
-    borderColor: '#000814',
-    borderStyle: 'solid',
-    backgroundColor: '#f2f2f2',
-    alignItems: 'center',
-    paddingHorizontal: 15,
-    paddingVertical: 5,
-    borderRadius: 15,
-    justifyContent: 'center'
-  },
-  textButton: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  titleContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 5,
-  },
-  top: {
-    alignItems: 'center',
-    gap: 8,
-  },
-  input: {
-    width: width * 0.7,
-    paddingVertical: 8,
-    paddingHorizontal: 15,
-    borderWidth: 1,
-    borderColor: '#000814',
-    borderRadius: 20,
-    borderStyle: 'solid',
-  },
   formContainer: {
-    gap: 8,
+    gap: 5,
   },
   button: {
     borderRadius: 50,
@@ -72,22 +39,25 @@ export const styles = StyleSheet.create({
     width: width * 0.7,
     display: 'flex',
     flexDirection: 'row',
-    gap: 8.
+    gap: 8,
+  },
+  textButton: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  bottom: {
+    marginTop: 20,
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 4,
+  },
+  link: {
+    color: "#003566",
+    fontWeight: 'bold',
   },
   icon: {
     width: 100,
     height: 100,
   },
-  bottom: {
-    display: 'flex',
-    flexDirection: 'row',
-    gap: 4,
-    marginTop: 5,
-    fontSize: 12
-  },
-  link: {
-    color: "#003566",
-    fontWeight: 'bold',
-  }
 
 });
