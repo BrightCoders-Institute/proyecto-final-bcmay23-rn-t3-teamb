@@ -17,5 +17,9 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: '#003566'
+  },
+  errorInput: {
+    borderColor: 'red',
   }
+
 });
