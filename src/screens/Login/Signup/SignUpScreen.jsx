@@ -29,8 +29,6 @@ let registerSchema = yup.object().shape({
     .required('Password is required'),
 });
 
-const handleLogIn = data => {};
-
 export const SignUpScreen = ({navigation}) => {
   return (
     <Formik
