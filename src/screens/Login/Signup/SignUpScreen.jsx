@@ -1,17 +1,24 @@
 import React from 'react';
 import {Formik, Field} from 'formik';
 import * as yup from 'yup';
-import {Text, View, Image, Pressable, TouchableHighlight, KeyboardAvoidingView} from 'react-native';
+import {
+  Text,
+  View,
+  Image,
+  Pressable,
+  TouchableHighlight,
+  KeyboardAvoidingView,
+  Alert,
+} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {styles} from './styles';
 import {Input, SeparationComponent} from '../../../components';
+import auth from '@react-native-firebase/auth';
 
 const image = require('../../../images/icon.jpg');
 
 let registerSchema = yup.object().shape({
-  username: yup
-    .string()
-    .required("Username is required"),
+  username: yup.string().required('Username is required'),
   email: yup
     .string()
     .email('Please enter a valid email')
@@ -22,12 +29,33 @@ let registerSchema = yup.object().shape({
     .required('Password is required'),
 });
 
+const handleLogIn = data => {};
+
 export const SignUpScreen = ({navigation}) => {
   return (
     <Formik
       validationSchema={registerSchema}
       initialValues={{email: '', password: '', username: ''}}
-      onSubmit={values => console.log(values)}>
+      onSubmit={async values => {
+        await auth()
+          .createUserWithEmailAndPassword(values.email, values.password)
+          .then(() => Alert.alert('Succesfull', 'User created!!', [
+            {
+              text: 'Ok', onPress: () => console.log('ok, pressed')
+            }
+          ]))
+          .catch(error => {
+            if (error.code === 'auth/email-already-in-use') {
+              Alert.alert('Error','That email address is already in use!')
+            }
+
+            if (error.code === 'auth/invalid-email') {
+              Alert.alert('Error', 'That email address is invalid!');
+            }
+
+            console.error(error);
+          });
+      }}>
       {({
         handleChange,
         handleBlur,
@@ -37,7 +65,7 @@ export const SignUpScreen = ({navigation}) => {
         isValid,
         errors,
       }) => (
-        <KeyboardAvoidingView style={styles.container}  behavior="height">
+        <KeyboardAvoidingView style={styles.container} behavior="height">
           {/* top */}
           <View style={styles.top}>
             <View style={styles.titleContainer}>
@@ -50,9 +78,26 @@ export const SignUpScreen = ({navigation}) => {
           {/* form */}
           <View style={styles.formContainer}>
             {/* inputs */}
-            <Field component={Input} name="username" placeholder="John Doe" label="User Name" />
-            <Field component={Input} name="email" placeholder="john@doe.com" label="Emaill address" keyboardType="email-address" />
-            <Field component={Input} name="password" placeholder="Password" label="Password" secureTextEntry />
+            <Field
+              component={Input}
+              name="username"
+              placeholder="John Doe"
+              label="User Name"
+            />
+            <Field
+              component={Input}
+              name="email"
+              placeholder="john@doe.com"
+              label="Emaill address"
+              keyboardType="email-address"
+            />
+            <Field
+              component={Input}
+              name="password"
+              placeholder="Password"
+              label="Password"
+              secureTextEntry
+            />
 
             <Pressable
               onPress={handleSubmit}
@@ -104,7 +149,7 @@ export const SignUpScreen = ({navigation}) => {
               )}
             </Pressable>
           </View>
-          
+
           <View style={styles.bottom}>
             <Text>Already have an account?</Text>
             <TouchableHighlight onPress={() => navigation.navigate('SignIn')}>
