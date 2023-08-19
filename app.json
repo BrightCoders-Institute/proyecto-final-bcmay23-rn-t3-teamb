@@ -1,4 +1,5 @@
 {
   "name": "gastrolab",
-  "displayName": "gastrolab"
+  "displayName": "gastrolab",
+  "plugins": ["@react-native-google-signin/google-signin"]
 }
