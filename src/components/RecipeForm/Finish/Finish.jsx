@@ -1,20 +1,51 @@
-import React from "react"
-import { View, Image, Text, StyleSheet, TextInput,TextArea, TouchableOpacity, Dimensions, onPress, ScrollView } from "react-native"
+import React from "react";
+import { View, Image, Text, ScrollView, TouchableOpacity } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome5'; // Replace 'FontAwesome' with the icon library you are using
-import {styles} from "./styles"
+import { connect } from 'react-redux';
+import { styles } from "./styles";
 
-const Finish = () => {
+const Finish = (props) => {
+    const { currentPhase, updateFormPhase } = props;
+    const recipe = props.recipe;
+
+    const handlePhaseClick = (phaseName) => {
+        updateFormPhase(phaseName);
+    };
+
+    const renderPhaseText = (phaseName) => {
+        const isActive = currentPhase === phaseName;
+        return (
+            <Text
+                style={[
+                    styles.phases,
+                    isActive && styles.activePhase,
+                ]}
+            >
+                {phaseName}
+            </Text>
+        );
+    };
+
+    const onPress = () => {
+        // Handle the continue button press
+    };
+
     return (
         <View style={styles.definitionContainer}>
-                <Text style={styles.definitionPhase}>Finish</Text>
-                <View style={styles.phaseIndicator}>
-                    <Text style={styles.phases}>Definition</Text>
-                    <Text style={styles.phases}>Ingredients</Text>
-                    <Text style={styles.phases}>Finish</Text>
-                </View>
+            <Text style={styles.definitionPhase}>Finish</Text>
+            <View style={styles.phaseIndicator}>
+                <TouchableOpacity onPress={() => handlePhaseClick('Definition')}>
+                    {renderPhaseText('Definition')}
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => handlePhaseClick('Ingredients')}>
+                    {renderPhaseText('Ingredients')}
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => handlePhaseClick('Finish')}>
+                    {renderPhaseText('Finish')}
+                </TouchableOpacity>
+            </View>
 
-                <View style={styles.outerContainer}>
-                    
+            <View style={styles.outerContainer}>
                 <View style={styles.container}>
                 <View style={styles.detailsContainer}>
                     <View style={styles.detailRow}>
@@ -52,13 +83,24 @@ const Finish = () => {
                 <TouchableOpacity style={styles.button} onPress={onPress}>
                     <Text style={styles.buttonText}>Continue</Text>
                 </TouchableOpacity>
+            </View>
 
-                </View>
-                
-
-
+            <TouchableOpacity style={styles.button} onPress={onPress}>
+                <Text style={styles.buttonText}>Continue</Text>
+            </TouchableOpacity>
         </View>
-    )
-}
+    );
+};
 
-export default Finish;
+const mapStateToProps = state => {
+    return {
+        recipe: state.form.recipe,
+        currentPhase: state.form.phase,
+    };
+};
+
+const mapDispatchToProps = {
+    updateFormPhase: (phase) => ({ type: 'UPDATE_FORM_PHASE', payload: phase }),
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Finish);

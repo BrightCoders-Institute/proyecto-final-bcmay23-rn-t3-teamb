@@ -5,7 +5,8 @@ import { LoginLayout, MainLayout } from './src/navigation';
 import User, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import { ReactNativeFirebase } from '@react-native-firebase/app';
 import auth from '@react-native-firebase/auth';
-
+import { Provider } from 'react-redux';
+import store from './src/store/store';
 const Stack = createNativeStackNavigator();
 
 function App(){
@@ -18,16 +19,21 @@ function App(){
   }, [])
 
   return (
+
     <NavigationContainer>
+    <Provider store={store}>
       <Stack.Navigator>
         {
-          user
-          ? <Stack.Screen name='Main' component={MainLayout} options={{headerShown: false}}/>
-          : <Stack.Screen name='Login' component={LoginLayout} options={{headerShown: false}}/> 
+          //user
+          //? <Stack.Screen name='Main' component={MainLayout} options={{headerShown: false}}/>
+          //: <Stack.Screen name='Login' component={LoginLayout} options={{headerShown: false}}/> 
+          <Stack.Screen name='Main' component={MainLayout} options={{headerShown: false}}/>
         }
         
       </Stack.Navigator>
+    </Provider>
     </NavigationContainer>
+
   );
 }
 

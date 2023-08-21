@@ -26,6 +26,15 @@ export const styles = StyleSheet.create({
         paddingVertical: 2,
         paddingHorizontal: 5
     },
+    activePhase: {
+        color: "white",
+        fontSize: 15,
+        fontWeight: "600",
+        backgroundColor: "#003566",
+        paddingVertical: 2,
+        paddingHorizontal: 5
+
+    },
     inputContainer: {
         backgroundColor: "#000814",
         paddingHorizontal: 35,
