@@ -6,6 +6,7 @@ import Finish from '../../components/RecipeForm/Finish/Finish';
 
 export const RecipeFormScreen = () => {
   const currentPhase = useSelector(state => state.form.phase);
+  console.log('Current Phase:', currentPhase);
 
   return (
     <React.Fragment>

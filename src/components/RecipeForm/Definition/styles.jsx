@@ -38,12 +38,12 @@ export const styles = StyleSheet.create({
     inputContainer: {
         backgroundColor: "#000814",
         paddingHorizontal: 35,
-        marginTop: 20
+        marginTop: 10
     },
     inputdefinition: {
         backgroundColor: "white",
         borderRadius: 15,
-        marginVertical: 20,
+        marginVertical: 18,
     },
     tags: {
         color: "white",
@@ -53,6 +53,14 @@ export const styles = StyleSheet.create({
         textAlign: "center",
         borderRadius: 10,
         marginBottom: 25
+    },
+    imagePicker: {
+        color: "black",
+        backgroundColor: "white",
+        paddingVertical: 15,
+        paddingLeft: 5,
+        borderRadius: 15,
+        marginVertical: 18
     },
     button: {
         paddingVertical: 10,
