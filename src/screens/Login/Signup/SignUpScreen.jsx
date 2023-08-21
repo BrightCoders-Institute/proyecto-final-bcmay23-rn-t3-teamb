@@ -14,8 +14,25 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {styles} from './styles';
 import {Input, SeparationComponent} from '../../../components';
 import auth from '@react-native-firebase/auth';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 const image = require('../../../images/icon.jpg');
+
+GoogleSignin.configure({
+  webClientId: '734926813510-jbluslcujftauaoabas3jor0umnu7pmq.apps.googleusercontent.com',
+});
+
+async function onGoogleButtonPress() {
+  // Check if your device supports Google Play
+  await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+  // Get the users ID token
+  const { idToken } = await GoogleSignin.signIn();
+  // Create a Google credential with the token
+  const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+  // Sign-in the user with the credential
+  return auth().signInWithCredential(googleCredential);
+}
 
 let registerSchema = yup.object().shape({
   username: yup.string().required('Username is required'),
@@ -120,9 +137,7 @@ export const SignUpScreen = ({navigation}) => {
             <SeparationComponent data={'Or'} />
 
             <Pressable
-              onPress={() => {
-                console.log('hi');
-              }}
+              onPress={() => onGoogleButtonPress().then(() => Alert.alert('Succesfull', 'User login!!'))}
               style={({pressed}) => [
                 {
                   backgroundColor: pressed ? '#003566' : '#ffd60a',
