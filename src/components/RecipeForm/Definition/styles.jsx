@@ -26,15 +26,24 @@ export const styles = StyleSheet.create({
         paddingVertical: 2,
         paddingHorizontal: 5
     },
+    activePhase: {
+        color: "white",
+        fontSize: 15,
+        fontWeight: "600",
+        backgroundColor: "#003566",
+        paddingVertical: 2,
+        paddingHorizontal: 5
+
+    },
     inputContainer: {
         backgroundColor: "#000814",
         paddingHorizontal: 35,
-        marginTop: 20
+        marginTop: 10
     },
     inputdefinition: {
         backgroundColor: "white",
         borderRadius: 15,
-        marginVertical: 20,
+        marginVertical: 18,
     },
     tags: {
         color: "white",
@@ -45,12 +54,23 @@ export const styles = StyleSheet.create({
         borderRadius: 10,
         marginBottom: 25
     },
+    imagePicker: {
+        color: "black",
+        backgroundColor: "white",
+        paddingVertical: 15,
+        paddingLeft: 5,
+        borderRadius: 15,
+        marginVertical: 18
+    },
     button: {
         paddingVertical: 10,
         marginHorizontal: 10,
         marginBottom: 20,
         backgroundColor: "#003566",
         borderRadius: 15
+    },
+    disabledButton: {
+        opacity: 0.5,
     },
     buttonText: {
         color: "white",
