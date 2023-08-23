@@ -1,102 +1,97 @@
 import React from "react";
 import { View, Image, Text, ScrollView, TouchableOpacity } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome5'; // Replace 'FontAwesome' with the icon library you are using
+import Icon2 from "react-native-vector-icons/MaterialCommunityIcons"
 import { updateFormPhase, goToPreviousPhase, goToSpecificPreviousPhase } from '../../../actions/actions';
 import { connect, useDispatch } from 'react-redux';
 import { styles } from "./styles";
 
 const Finish = (props) => {
-    const {recipe, currentPhase, updateFormPhase, goToPreviousPhase } = props;
-    const dispatch = useDispatch();
+  const { recipe, ingredientsList, currentPhase, updateFormPhase, goToPreviousPhase } = props;
+  const dispatch = useDispatch();
 
-    const handlePreviousPhase = () => {
-        dispatch(goToSpecificPreviousPhase('ingredients'));
-      };
+  const handlePreviousPhase = () => {
+    dispatch(goToSpecificPreviousPhase('ingredients'));
+  };
 
-    const handlePhaseClick = (phaseName) => {
-        dispatch({ type: 'UPDATE_FORM_PHASE', payload: phaseName });
-    };
-
-
-    const renderPhaseText = (phaseName) => {
-        const isActive = currentPhase === phaseName;
-        return (
-          <Text
-            style={[
-              styles.phases,
-              isActive && styles.activePhase,
-            ]}
-          >
-            {phaseName}
-          </Text>
-        );
-      };
-
-    const onPress = () => {
-        // Handle the continue button press
-    };
+  const renderPhaseText = (phaseName) => {
+    const isActive = currentPhase === phaseName;
+    return (
+      <Text style={[styles.phases, isActive && styles.activePhase,]}>
+        {phaseName}
+      </Text>
+    );
+  };
 
     return (
         <View style={styles.definitionContainer}>
-            <Text style={styles.definitionPhase}>Finish</Text>
             {currentPhase === 'finish' && (
-                <TouchableOpacity onPress={handlePreviousPhase}>
-                    <Text>back</Text>
+                <TouchableOpacity onPress={handlePreviousPhase} style={styles.goBackContainer}>
+                    <Icon2 name="arrow-left-thick" size={25} color="yellow"/>
                 </TouchableOpacity>
             )}
+            <Text style={styles.definitionPhase}>Finish</Text>
             <View style={styles.phaseIndicator}>
-                <TouchableOpacity onPress={() => handlePhaseClick('Definition')}>
-                    {renderPhaseText('definition')}
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => handlePhaseClick('Ingredients')}>
-                    {renderPhaseText('ingredients')}
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => handlePhaseClick('Finish')}>
-                    {renderPhaseText('finish')}
-                </TouchableOpacity>
+                {renderPhaseText('definition')}
+                {renderPhaseText('ingredients')}
+                {renderPhaseText('finish')}
             </View>
 
             <View style={styles.outerContainer}>
                 <View style={styles.container}>
                 <View style={styles.detailsContainer}>
                     <View style={styles.detailRow}>
-                        <Text style={styles.name}>RECIPE NAME</Text>
+                        <Text style={styles.name}>{recipe.name}</Text>
                     </View>
                     <View style={styles.detailRow}>
                         <Icon name="clock" size={20} color="yellow" style={styles.icon} />
-                        <Text style={styles.text}>3:30</Text>
+                        <Text style={styles.text}>{recipe.prepTime}</Text>
                     </View>
                     <View style={styles.detailRow}>
-                        <Icon name="user-alt" size={20} color="yellow" style={styles.icon} />
-                        <Text style={styles.text}>2</Text>
+                        <Icon2 name="bowl-mix" size={22} color="yellow" style={styles.icon} />
+                        <Text style={styles.text}>{recipe.servings}</Text>
+                    </View>
+                    <View style={styles.detailRow}>
+                        <Icon name="burn" size={20} color="yellow" style={styles.icon} />
+                        <Text style={styles.text}>{recipe.calories}</Text>
                     </View>
                 </View>
-                <Image source={"https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg?resize=1200:*"} style={styles.image} />
+                <Image source={{ uri: recipe.image }} style={styles.image} />
                 </View>
 
                 <View style={styles.containerDataFinish}>
-                    <ScrollView style={styles.ingredientsList}>
-                        <Text style={styles.ingredientsTitle}>Ingredients List</Text>
-                        <Text style={styles.ingredientsText}>1.-vanilla 2oz</Text>
+                <View style={styles.ingredientsList}>
+                    <Text style={styles.ingredientsTitle}>Ingredients List</Text>
+                    <ScrollView style={styles.ingredientsContainer}>
+                        {ingredientsList.map((ingredient, index) => (
+                            <Text key={index} style={styles.ingredientsText}>
+                                {`${index + 1}. ${ingredient.ingredient} ${ingredient.quantity}`}
+                            </Text>
+                        ))}
                     </ScrollView>
+                </View>
                     <View>
-                        <ScrollView style={styles.description}>
+                        <View style={styles.description}>
                             <Text style={styles.ingredientsTitle}>Description</Text>
-                            <Text style={styles.ingredientsDescription}>1.-vanilla</Text>
-                        </ScrollView>
+                            <ScrollView>
+                            <Text style={styles.ingredientsDescription}>{recipe.description}</Text>
+                            </ScrollView>
+                        </View>
 
-                        <ScrollView style={styles.instructions}>
+                        <View style={styles.instructions}>
                             <Text style={styles.ingredientsTitle}>Instructions</Text>
-                            <Text style={styles.ingredientsInstructions}>1.-vanilla</Text>
-                        </ScrollView>
+                            <ScrollView>
+                            <Text style={styles.ingredientsInstructions}>{recipe.instructions}</Text>
+                            </ScrollView>
+                        </View>
                     </View>
                 </View>
-                <TouchableOpacity style={styles.button} onPress={onPress}>
-                    <Text style={styles.buttonText}>Continue</Text>
+                <TouchableOpacity style={styles.button} >
+                    <Text style={styles.buttonText}>Finish</Text>
                 </TouchableOpacity>
             </View>
 
-            <TouchableOpacity style={styles.button} onPress={onPress}>
+            <TouchableOpacity style={styles.button} >
                 <Text style={styles.buttonText}>Continue</Text>
             </TouchableOpacity>
         </View>
@@ -104,15 +99,17 @@ const Finish = (props) => {
 };
 
 const mapStateToProps = state => {
-    return {
-        recipe: state.form.recipe,
-        currentPhase: state.form.phase,
-    };
+  return {
+    recipe: state.form.recipe,
+    ingredientsList: state.form.recipe.ingredients, // Assuming ingredientsList is an array of objects
+    currentPhase: state.form.phase,
+  };
 };
 
+
 const mapDispatchToProps = {
-    updateFormPhase,
-    goToPreviousPhase,
+  updateFormPhase,
+  goToPreviousPhase,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Finish);

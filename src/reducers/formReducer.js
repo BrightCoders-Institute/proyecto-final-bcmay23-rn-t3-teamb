@@ -13,13 +13,16 @@ const initialState = {
     tags: [],
     description: '',
     instructions: '',
-    ingredients: [],
+    ingredients: [
+      { ingredient: '', quantity: '' }, // Initialize with an empty object
+    ],
   },
 };
 
 const formReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'UPDATE_FORM_FIELD':
+      console.log('Updating form field:', action.payload.fieldName, action.payload.value);
       return {
         ...state,
         recipe: {
@@ -43,6 +46,17 @@ const formReducer = (state = initialState, action) => {
         ...state,
         phase: action.payload, // Set current phase to the specified previous phase
       };
+      case 'UPDATE_INGREDIENTS':
+        return {
+          ...state,
+          recipe: {
+            ...state.recipe,
+            ingredients: action.payload.map(item => ({
+              ingredient: item.ingredient || '',
+              quantity: item.quantity || '',
+            })),
+          },
+        };
     default:
       return state;
   }

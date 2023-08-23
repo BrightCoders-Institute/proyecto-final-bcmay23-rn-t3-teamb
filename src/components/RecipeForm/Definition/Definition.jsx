@@ -1,5 +1,6 @@
 import {React, useState} from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
+import { useEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Image, ToastAndroid  } from 'react-native';
 import { connect, useDispatch } from 'react-redux';
 import { updateFormField, moveToNextPhase, updateFormPhase } from '../../../actions/actions';
 import { styles } from './styles';
@@ -8,36 +9,36 @@ import ImagePicker from 'react-native-image-crop-picker';
 const Definition = (props) => {
   const { recipe, currentPhase, updateFormPhase, updateFormField, moveToNextPhase } = props;
   const dispatch = useDispatch();
+  const [ingredientsList, setIngredientsList] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [isFormValid, setIsFormValid] = useState(false);
 
   const handleInputChange = (fieldName, value) => {
     if (fieldName === 'tags') {
-      // Convert the comma-separated string to an array of tags
-      const tagArray = value.split(',').map(tags => tags.trim());
+      const tagArray = value.split(',').map(tag => tag.trim());
       updateFormField(fieldName, tagArray);
+    } else if (fieldName === 'image') {
+      updateFormField(fieldName, value);
+      setSelectedImage(value);
     } else {
       updateFormField(fieldName, value);
     }
   };
-
+  
   const handleNextPhase = () => {
-    moveToNextPhase();
+    props.updateFormField('numIngredients', recipe.numIngredients);
+    props.updateFormField('ingredients', ingredientsList);
+    props.moveToNextPhase();
   };
 
   const renderPhaseText = (phaseName) => {
     const isActive = currentPhase === phaseName;
     return (
-      <Text
-        style={[
-          styles.phases,
-          isActive && styles.activePhase,
-        ]}
-      >
+      <Text style={[styles.phases,isActive && styles.activePhase,]}>
         {phaseName}
       </Text>
     );
   };
-
-  const [selectedImage, setSelectedImage] = useState(null);
 
   const openImagePicker = () => {
     ImagePicker.openPicker({
@@ -46,47 +47,73 @@ const Definition = (props) => {
       cropping: true,
     }).then(image => {
       console.log(image);
+      updateFormField('image', image.path);
       setSelectedImage(image.path);
+      validateForm();
     }).catch(error => {
-      console.log(error);
+      ToastAndroid.showWithGravity(
+        'An error occurred while selecting an image.',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM
+      );
     });
   };
+
+  const validateForm = () => {
+    const requiredFields = [
+      recipe.name,
+      recipe.image,
+      recipe.servings,
+      recipe.prepTime,
+      recipe.numIngredients,
+      recipe.calories,
+      recipe.tags.length > 0,
+    ];
+  
+    const isValid = requiredFields.every(field => field !== '');
+    setIsFormValid(isValid);
+  };
+  
+  useEffect(() => {
+    validateForm();
+  }, [recipe]);
+  
 
   return (
     <View style={styles.definitionContainer}>
       <Text style={styles.definitionPhase}>Definition</Text>
       <View style={styles.phaseIndicator}>
-        <TouchableOpacity onPress={() => handlePhaseClick('Definition')}>
           {renderPhaseText('definition')}
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => handlePhaseClick('Ingredients')}>
           {renderPhaseText('ingredients')}
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => handlePhaseClick('Finish')}>
           {renderPhaseText('finish')}
-        </TouchableOpacity>
       </View>
       <View style={styles.inputContainer}>
         <TextInput
           placeholder="Recipe Name"
           value={recipe.name}
           style={styles.inputdefinition}
-          onChange={e => handleInputChange('name', e.target.value)}
+          onChangeText={(text) => handleInputChange('name', text)}
         />
         <TouchableOpacity onPress={openImagePicker}>
-          <Text style={styles.imagePicker}>Select Image</Text>
+          <Text style={styles.imagePicker}>
+            {selectedImage ? (selectedImage.length > 45 ? `${selectedImage.substring(0, 45)}...` : selectedImage) : "Select Image"}
+          </Text>
         </TouchableOpacity>
         <TextInput
           placeholder="Number of Servings"
           value={recipe.servings}
           style={styles.inputdefinition}
-          onChange={e => handleInputChange('servings', e.target.value)}
+          onChangeText={(text) => {
+            const numericValue = text.replace(/[^0-9]/g, '');
+            handleInputChange('servings', numericValue);
+          }}
+          keyboardType="numeric"
         />
         <TextInput
           placeholder="Preparation Time"
           value={recipe.prepTime}
           style={styles.inputdefinition}
-          onChange={e => handleInputChange('prepTime', e.target.value)}
+          onChangeText={(text) => handleInputChange('prepTime', text)}
         />
         <TextInput
           placeholder="Number of Ingredients"
@@ -111,20 +138,22 @@ const Definition = (props) => {
         />
         <TextInput
           placeholder="Tags"
-          value={recipe.tags.toString()}
+          value={recipe.tags.join(', ')} // Convert the array to a comma-separated string
           style={styles.inputdefinition}
-          onChange={e => handleInputChange('tags', e.target.value)}
-        />
+          onChangeText={(text) => handleInputChange('tags', text)}
+          />
         {selectedImage && <Image source={{ uri: selectedImage }} />}
-        <TouchableOpacity style={styles.button} onPress={handleNextPhase}>
+        <TouchableOpacity style={[styles.button, !isFormValid && styles.disabledButton]} onPress={handleNextPhase} disabled={!isFormValid}>
           <Text style={styles.buttonText}>Continue</Text>
         </TouchableOpacity>
+
       </View>
     </View>
   );
 };
 
 const mapStateToProps = (state) => {
+  console.log('Current recipe object:', state.form.recipe);
   return {
     recipe: state.form.recipe,
     currentPhase: state.form.phase,

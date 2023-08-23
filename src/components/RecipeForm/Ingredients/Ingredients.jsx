@@ -1,126 +1,164 @@
-import React from "react";
-import { useState } from "react";
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity, ScrollView } from "react-native";
-import { updateFormField, moveToNextPhase, updateFormPhase, goToSpecificPreviousPhase } from '../../../actions/actions';
 import { connect, useDispatch } from 'react-redux';
+import Icon2 from "react-native-vector-icons/MaterialCommunityIcons";
+import { updateFormField, moveToNextPhase, updateFormPhase, goToSpecificPreviousPhase } from '../../../actions/actions';
+import IngredientsForm from "./ingredientsForm/ingredientsForm";
 import { styles } from "./styles";
 
 const Ingredients = (props) => {
-    const { recipe, currentPhase, updateFormPhase } = props;
-    const dispatch = useDispatch();
-    const [ingredientsList, setIngredientsList] = useState([]);
+  const { recipe, currentPhase} = props;
+  const dispatch = useDispatch();
+  const [ingredientsList, setIngredientsList] = useState([]);
+  const [isFormValid, setIsFormValid] = useState(false);
 
-    // Update ingredientsList when numIngredients changes
-    useEffect(() => {
-        setIngredientsList(Array.from({ length: recipe.numIngredients }, () => ({ ingredient: '', quantity: '' })));
-    }, [recipe.numIngredients]);
-
-    const handleIngredientChange = (index, fieldName, value) => {
-        const newIngredients = [...ingredientsList];
-        newIngredients[index][fieldName] = value;
-        setIngredientsList(newIngredients);
-    };
-
-    const handlePhaseClick = (phaseName) => {
-        dispatch({ type: 'UPDATE_FORM_PHASE', payload: phaseName });
-    };
-
-    const handlePreviousPhase = () => {
-        dispatch(goToSpecificPreviousPhase('definition'));
+  const handleInputChange = (fieldName, value) => {
+    if (fieldName === 'description') {
+      const updatedRecipe = {
+        ...recipe,
+        description: value,
       };
-
-
-      const renderPhaseText = (phaseName) => {
-        const isActive = currentPhase === phaseName;
-        return (
-          <Text
-            style={[
-              styles.phases,
-              isActive && styles.activePhase,
-            ]}
-          >
-            {phaseName}
-          </Text>
-        );
+      props.updateFormField('description', value); 
+    } else if (fieldName === 'instructions') {
+      const updatedRecipe = {
+        ...recipe,
+        instructions: value,
       };
+      props.updateFormField('instructions', value); 
+    } else if (fieldName === 'ingredients') {
+      const newIngredients = [...recipe.ingredients];
+      newIngredients[index].ingredient = value; 
+      props.updateFormField('ingredients', newIngredients);
+      dispatch({ type: 'UPDATE_INGREDIENTS', payload: newIngredients }); 
+    } else if (fieldName === 'quantities') {
+      const newIngredients = [...recipe.ingredients];
+      newIngredients[index].quantity = value; 
+      props.updateFormField('ingredients', newIngredients);
+      dispatch({ type: 'UPDATE_INGREDIENTS', payload: newIngredients }); 
+    }
+  };
 
-    const handleNextPhase = () => {
-        props.moveToNextPhase();
-    };
+  const handleIngredientChange = (index, fieldName, value) => {
+    const newIngredients = [...ingredientsList];
+    newIngredients[index][fieldName] = value;
+    setIngredientsList(newIngredients);
+  };
 
+  const handlePreviousPhase = () => {
+    dispatch(goToSpecificPreviousPhase('definition'));
+  };
+
+  const renderPhaseText = (phaseName) => {
+    const isActive = currentPhase === phaseName;
     return (
-        <View style={styles.definitionContainer}>
-            <Text style={styles.definitionPhase}>Ingredients</Text>
-            {currentPhase === 'ingredients' && (
-                <TouchableOpacity onPress={handlePreviousPhase}>
-                    <Text>back</Text>
-                </TouchableOpacity>
-            )}
-            <View style={styles.phaseIndicator}>
-                <TouchableOpacity onPress={() => handlePhaseClick('Definition')}>
-                    {renderPhaseText('definition')}
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => handlePhaseClick('Ingredients')}>
-                    {renderPhaseText('ingredients')}
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => handlePhaseClick('Finish')}>
-                    {renderPhaseText('finish')}
-                </TouchableOpacity>
-            </View>
-            <View style={styles.inputContainer}>
-                <TextInput
-                    placeholder="Description"
-                    //value={recipe.description}
-                    numberOfLines={5}
-                    style={styles.inputdefinition}
-                />
-                
-                <ScrollView style={styles.ingredientsOuterContainer}>
-                    {ingredientsList.map((item, index) => (
-                    <View style={styles.ingredientsContainer} key={index}>
-                        <TextInput
-                            placeholder="Ingredients"
-                            value={item.ingredient}
-                            style={styles.ingredient}
-                            onChangeText={(text) => handleIngredientChange(index, 'ingredient', text)}
-                        />
-                        <TextInput
-                            placeholder="quantity"
-                            value={item.quantity}
-                            style={styles.ingredientquantity}
-                            onChangeText={(text) => handleIngredientChange(index, 'quantity', text)}
-                        />
-                    </View>
-                    ))}
-                </ScrollView>
-
-                <TextInput
-                    placeholder="Instructions"
-                    //value={recipe.instructions}
-                    numberOfLines={5}
-                    style={styles.inputdefinition}
-                />
-                
-                <TouchableOpacity style={styles.button} onPress={handleNextPhase}>
-                    <Text style={styles.buttonText}>Continue</Text>
-                </TouchableOpacity>
-            </View>
-        </View>
+      <Text style={[styles.phases, isActive && styles.activePhase,]} >
+        {phaseName}
+      </Text>
     );
+  };
+
+  useEffect(() => {
+    if (currentPhase === 'ingredients' && recipe.numIngredients > 0) {
+      setIngredientsList(Array.from({ length: recipe.numIngredients }, (_, index) => {
+        const ingredientData = recipe.ingredients && recipe.ingredients[index];
+        return {
+          ingredient: ingredientData ? ingredientData.ingredient : '',
+          quantity: ingredientData ? ingredientData.quantity : '',
+        };
+      }));
+    }
+  }, [currentPhase, recipe.numIngredients, recipe.ingredients]);
+
+  const handleNextPhase = () => {
+    props.updateFormField('ingredients', ingredientsList);
+    props.moveToNextPhase();
+  };
+
+  const validateForm = () => {
+    const requiredFields = [
+      recipe.description,
+      recipe.instructions,
+      ...ingredientsList.map(item => item.ingredient && item.quantity), // Validate ingredient and quantity
+    ];
+    const isValid = requiredFields.every(field => field !== '');
+    setIsFormValid(isValid);
+  };
+      
+  useEffect(() => {
+    validateForm();
+  }, [recipe, ingredientsList]);
+
+  const renderIngredients = () => {
+    return ingredientsList.map((item, index) => (
+      <IngredientsForm
+        key={index}
+        index={index}
+        item={item}
+        handleIngredientChange={handleIngredientChange}
+      />
+    ));
+  };
+
+  return (
+    <View style={styles.definitionContainer}>
+      {currentPhase === 'ingredients' && (
+        <TouchableOpacity onPress={handlePreviousPhase} style={styles.goBackContainer}>
+          <Icon2 name="arrow-left-thick" size={25} color="yellow"/>
+        </TouchableOpacity>
+      )}
+      <Text style={styles.definitionPhase}>Ingredients</Text>
+      <View style={styles.phaseIndicator}>
+        {renderPhaseText('definition')}
+        {renderPhaseText('ingredients')}
+        {renderPhaseText('finish')}
+      </View>
+      <View style={styles.inputContainer}>
+        <ScrollView style={styles.ingredientsInputScroll}>
+        <TextInput
+          placeholder="Description"
+          value={recipe.description}
+          multiline={true}
+          numberOfLines={5}
+          style={styles.inputdefinition}
+          onChangeText={(text) => handleInputChange('description', text)}
+        />
+        </ScrollView>
+
+        <ScrollView style={styles.ingredientsOuterContainer}>
+          {renderIngredients()}
+        </ScrollView>
+
+        <ScrollView style={styles.ingredientsInputScroll}>
+        <TextInput
+          placeholder="Instructions"
+          value={recipe.instructions}
+          multiline={true}
+          numberOfLines={5}
+          style={styles.inputdefinition}
+          onChangeText={(text) => handleInputChange('instructions', text)}
+        />
+        </ScrollView>
+                
+        <TouchableOpacity style={[styles.button, !isFormValid && styles.disabledButton]} onPress={handleNextPhase} disabled={!isFormValid}>
+          <Text style={styles.buttonText}>Continue</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
 };
 
 const mapStateToProps = state => {
-    return {
-        recipe: state.form.recipe,
-        currentPhase: state.form.phase,
-    };
+  console.log('Current recipe object:', state.form.recipe);
+  return {
+    recipe: state.form.recipe,
+    currentPhase: state.form.phase,
+  };
 };
 
 const mapDispatchToProps = {
-    updateFormField,
-    moveToNextPhase,
-    updateFormPhase,
+  updateFormField,
+  moveToNextPhase,
+  updateFormPhase,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Ingredients);

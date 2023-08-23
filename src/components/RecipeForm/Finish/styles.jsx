@@ -7,13 +7,21 @@ export const styles = StyleSheet.create({
     definitionContainer:{
         backgroundColor: "white"
     },
+    goBackContainer: {
+      backgroundColor: "#003566",
+      padding: 5,
+      width: 35,
+      borderRadius: 50,
+      marginLeft: 5,
+      marginTop: 2,
+    },
     definitionPhase: {
         fontSize: 25,
         fontWeight: "800",
         textAlign: "center",
-        paddingTop: 30,
         paddingBottom: 5,
-        color: "#003566"
+        color: "#003566",
+        marginTop: -8
     },
     phaseIndicator: {
         flexDirection: "row",
@@ -98,10 +106,14 @@ export const styles = StyleSheet.create({
         color: "black",
         fontWeight: "500"
       },
-      ingredientsText: {
+      ingredientsContainer: {
         backgroundColor: "white",
         borderRadius: 15,
-        paddingBottom: 320,
+        paddingBottom: 220
+
+      },
+      ingredientsText: {
+        borderRadius: 15,
         paddingHorizontal: 5,
         textAlign: "left",
         color: "black",
@@ -112,16 +124,17 @@ export const styles = StyleSheet.create({
         padding: 8,
         borderRadius: 15,
         marginRight: 40,
-        width: 200
+        width: 170,
+        height: 190
       },
       ingredientsDescription: {
         backgroundColor: "white",
         borderRadius: 15,
-        paddingBottom: 120,
         paddingHorizontal: 5,
         textAlign: "left",
         color: "black",
-        fontWeight: "500"
+        fontWeight: "500",
+        paddingBottom: 135
       },
       instructions:{
         backgroundColor: "#FFC300",
@@ -129,16 +142,19 @@ export const styles = StyleSheet.create({
         borderRadius: 15,
         marginRight: 40,
         marginTop: 20,
-        marginBottom: 22
+        marginBottom: 22,
+        width: 170,
+        height: 190
+
       },
       ingredientsInstructions: {
         backgroundColor: "white",
         borderRadius: 15,
-        paddingBottom: 120,
         paddingHorizontal: 5,
         textAlign: "left",
         color: "black",
-        fontWeight: "500"
+        fontWeight: "500",
+        paddingBottom: 135
       },
       buttonContainer: {
         backgroundColor: "#000814",

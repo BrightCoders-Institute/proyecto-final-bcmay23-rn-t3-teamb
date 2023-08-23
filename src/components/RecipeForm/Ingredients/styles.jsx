@@ -4,13 +4,21 @@ export const styles = StyleSheet.create({
     definitionContainer:{
         backgroundColor: "white"
     },
+    goBackContainer: {
+        backgroundColor: "#003566",
+        padding: 5,
+        width: 35,
+        borderRadius: 50,
+        marginLeft: 5,
+        marginTop: 2,
+    },
     definitionPhase: {
         fontSize: 25,
         fontWeight: "800",
         textAlign: "center",
-        paddingTop: 30,
         paddingBottom: 5,
-        color: "#003566"
+        color: "#003566",
+        marginTop: -8
     },
     phaseIndicator: {
         flexDirection: "row",
@@ -37,10 +45,10 @@ export const styles = StyleSheet.create({
     inputContainer: {
         backgroundColor: "#000814",
         paddingHorizontal: 35,
-        marginTop: 20
+        marginTop: 10
     },
     ingredientsOuterContainer: {
-        height: 300
+        height: 310
     },
     ingredientsContainer:{
         flexDirection: "row"
@@ -56,12 +64,15 @@ export const styles = StyleSheet.create({
         borderRadius: 15,
         width: 120,
         marginLeft: 20,
-        marginBottom: 10
+        marginBottom: 15
     },
     inputdefinition: {
         backgroundColor: "white",
         borderRadius: 15,
         marginVertical: 18,
+        height: 106
+    },
+    ingredietsInputScroll: {
     },
     button: {
         paddingVertical: 10,
@@ -69,6 +80,9 @@ export const styles = StyleSheet.create({
         marginBottom: 30,
         backgroundColor: "#003566",
         borderRadius: 15
+    },
+    disabledButton: {
+        opacity: 0.5,
     },
     buttonText: {
         color: "white",
