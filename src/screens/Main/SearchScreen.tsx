@@ -4,7 +4,7 @@ import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 import { API } from '../../database';
-import { recipe } from '../../types/index';
+import { RecipeElement } from '../../types';
 
 export const SearchScreen = () => {
 
@@ -13,7 +13,7 @@ export const SearchScreen = () => {
       .then(response => {
         const {recipes} = response.data;
         
-        recipes.map((i: recipe) => console.log(i.title));
+        recipes.map((i: RecipeElement) => console.log(i.title));
       })
   }, [])
 
