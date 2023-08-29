@@ -4,10 +4,39 @@ import { useState } from 'react';
 import ShowRecipe from '../../components/Recipe/ShowRecipe'
 import recipe from '../../assets/recipes.json';
 import {styles} from "./styles"
+import auth from '@react-native-firebase/auth';
+import { useEffect } from 'react';
+import { firebase } from "@react-native-firebase/firestore";
 
 export const ProfileScreen = () => {
-  const [data, setData] = useState(recipe);
+  const [userData, setUserData] = useState({});
+  const [userRecipes, setUserRecipes] = useState([]);
   const imageProfile = require('../../images/profile.jpeg');
+  const [userRecipesCount, setUserRecipesCount] = useState(0);
+  const userId = auth().currentUser?.uid;
+
+  useEffect(() => {
+    if (userId) {
+      // Obtener los datos del usuario desde Firestore
+      const userRef = firebase.firestore().collection('users').doc(userId);
+      userRef.get().then((doc) => {
+        if (doc.exists) {
+          setUserData(doc.data());
+        }
+      });
+  
+      // Obtener las recetas del usuario desde Firestore
+      const recipesRef = firebase.firestore().collection('recipes').where('userId', '==', userId);
+      recipesRef.get().then((querySnapshot) => {
+        const recipesData = [];
+        querySnapshot.forEach((doc) => {
+          recipesData.push(doc.data());
+        });
+        setUserRecipes(recipesData);
+        setUserRecipesCount(recipesData.length);
+      });
+    }
+  }, [userId]);
 
   return (
     <View style={styles.profileContainer}>
@@ -17,12 +46,12 @@ export const ProfileScreen = () => {
                 style={styles.imageProfile}
             /> 
         </View>     
-        <Text style={styles.userName}>UserName</Text>
-        <Text style={styles.userEmail}>useremail@mail.com</Text>
+        <Text style={styles.userName}>{userData.username}</Text>
+        <Text style={styles.userEmail}>{userData.email}</Text>
 
         <View style={styles.likesContainer}>
             <View style={styles.likesinnerContainer}>
-                <Text style={styles.recipesNumber}>60</Text>
+                <Text style={styles.recipesNumber}>{userRecipesCount}</Text>
                 <Text style={styles.recipesText}>Recipes</Text>
             </View>
             <View style={styles.likesinnerContainer}>
@@ -31,12 +60,12 @@ export const ProfileScreen = () => {
             </View>
         </View>
       <View style={styles.outerContainer}>
-        <ScrollView>
+        <ScrollView> 
           <View style={styles.container}>
             <View style={styles.row}>
-              {data.map((item, index) => (
-                <View key={item.id} style={styles.column}>
-                  <ShowRecipe recipeData={item} />
+              {userRecipes.map((recipeData, index) => (
+                <View key={index} style={styles.column}>
+                  <ShowRecipe recipeData={recipeData} context="profile" />
                 </View>
               ))}
             </View>

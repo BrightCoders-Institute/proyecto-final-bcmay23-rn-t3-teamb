@@ -43,9 +43,9 @@ export const HomeScreen = () => {
 
         </View>
         <PopularRecipe
-          imageSource="https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg?resize=1200:*"
-          recipeName="recipe"
-          favoriteNum="12"
+          image="https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg?resize=1200:*"
+          name="recipe"
+          prepTime="12"
           servings="2"
         />
       </View>
@@ -90,7 +90,7 @@ export const HomeScreen = () => {
             <View style={styles.row}>
               {data.map((item, index) => (
                 <View key={item.id} style={styles.column}>
-                  <ShowRecipe recipeData={item} />
+                  <ShowRecipe recipeData={item} context="home" />
                 </View>
               ))}
             </View>
