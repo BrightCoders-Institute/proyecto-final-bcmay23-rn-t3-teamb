@@ -172,5 +172,24 @@ export const styles = StyleSheet.create({
         fontSize: 30,
         fontWeight: "800",
         textAlign: "center"
+    },
+
+    modalContent: {
+        backgroundColor: "white",
+        height: 200,
+        marginVertical: 300,
+        marginHorizontal: 80,
+        borderRadius: 15,
+        borderWidth: 10,
+        borderColor: "#003566",
+    },
+    modalIcon: {
+      paddingLeft: 65
+    },
+    modalText: {
+      color: "black",
+      fontSize: 30,
+      fontWeight: "bold",
+      textAlign: "center"
     }
 })

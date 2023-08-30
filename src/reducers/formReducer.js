@@ -46,7 +46,7 @@ const formReducer = (state = initialState, action) => {
         ...state,
         phase: action.payload, // Set current phase to the specified previous phase
       };
-      case 'UPDATE_INGREDIENTS':
+    case 'UPDATE_INGREDIENTS':
         return {
           ...state,
           recipe: {
@@ -57,6 +57,11 @@ const formReducer = (state = initialState, action) => {
             })),
           },
         };
+    case 'RESET_FORM_PHASE':
+      return {
+        ...initialState,
+        phase: 'definition', // Reset the form phase to 'definition'
+    };  
     default:
       return state;
   }
