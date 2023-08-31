@@ -18,3 +18,6 @@ export const updateFormField = (fieldName, value) => {
     type: 'GO_TO_SPECIFIC_PREVIOUS_PHASE',
     payload: phase,
   });    
+  export const resetFormPhase = () => ({
+    type: 'RESET_FORM_PHASE',
+  });

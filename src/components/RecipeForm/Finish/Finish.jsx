@@ -1,14 +1,37 @@
-import React from "react";
-import { View, Image, Text, ScrollView, TouchableOpacity } from "react-native";
+import React, {useState} from "react";
+import { View, Image, Text, ScrollView, TouchableOpacity, Modal } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome5'; // Replace 'FontAwesome' with the icon library you are using
 import Icon2 from "react-native-vector-icons/MaterialCommunityIcons"
-import { updateFormPhase, goToPreviousPhase, goToSpecificPreviousPhase } from '../../../actions/actions';
+import Icon3 from "react-native-vector-icons/FontAwesome"
+import { updateFormPhase, goToPreviousPhase, goToSpecificPreviousPhase, resetFormPhase } from '../../../actions/actions';
 import { connect, useDispatch } from 'react-redux';
 import { styles } from "./styles";
+import { firebase } from "@react-native-firebase/firestore";
+import auth from '@react-native-firebase/auth';
+
+const saveRecipeToFirestore = (recipeData, userId) => {
+  return new Promise((resolve, reject) => {
+    const db = firebase.firestore();
+    const recipeId = db.collection('recipes').doc().id;
+
+    db.collection('recipes').doc(recipeId).set({
+      userId: userId,
+      ...recipeData
+    })
+      .then(() => {
+        resolve(); // Resolve the promise for success
+      })
+      .catch((error) => {
+        reject(error); // Reject the promise for error
+      });
+  });
+};
 
 const Finish = (props) => {
   const { recipe, ingredientsList, currentPhase, updateFormPhase, goToPreviousPhase } = props;
   const dispatch = useDispatch();
+  const [successModalVisible, setSuccessModalVisible] = useState(false);
+  const [errorModalVisible, setErrorModalVisible] = useState(false);
 
   const handlePreviousPhase = () => {
     dispatch(goToSpecificPreviousPhase('ingredients'));
@@ -21,6 +44,35 @@ const Finish = (props) => {
         {phaseName}
       </Text>
     );
+  };
+
+  const user = auth().currentUser;
+  const userId = user ? user.uid : null;
+  
+  const handleSubmit = () => {
+    // Aquí obtén los datos de recipe y ingredientsList del props
+
+    const recipeData = {
+      name: recipe.name,
+      image: recipe.image,
+      servings: recipe.servings,
+      prepTime: recipe.prepTime,
+      calories: recipe.calories,
+      numIngredients: recipe.numIngredients,
+      tags: recipe.tags,
+      description: recipe.description,
+      instructions: recipe.instructions,
+      ingredients: ingredientsList,
+    };
+
+    saveRecipeToFirestore(recipeData, userId)
+      .then(() => {
+        setSuccessModalVisible(true); // Show success modal
+      })
+      .catch((error) => {
+        console.error('Error saving recipe:', error);
+        setErrorModalVisible(true); // Show error modal
+      });
   };
 
     return (
@@ -86,12 +138,42 @@ const Finish = (props) => {
                         </View>
                     </View>
                 </View>
-                <TouchableOpacity style={styles.button} >
+                <TouchableOpacity style={styles.button} onPress={handleSubmit}>
                     <Text style={styles.buttonText}>Finish</Text>
                 </TouchableOpacity>
+
+                <Modal visible={successModalVisible} transparent>
+                  <View style={styles.modalContent}>
+                  <TouchableOpacity
+                      style={styles.modalButton}
+                      onPress={() => {
+                        setSuccessModalVisible(false);
+                        props.resetFormPhase();
+
+                      }}
+                    >
+                    <Icon3 name="check-circle-o" size={120} color="#FFC300" style={styles.modalIcon}/>
+                    <Text style={styles.modalText}>Recipe saved!</Text>
+                    </TouchableOpacity>
+                  </View>
+                </Modal>
+
+                {/* Error Modal */}
+                <Modal visible={errorModalVisible} transparent>
+                  <View style={styles.modalContent}>
+                  <TouchableOpacity
+                      style={styles.modalButton}
+                      onPress={() => {
+                        setErrorModalVisible(false);
+                      }}
+                    >
+                    <Text style={styles.modalText}>An error occurred!</Text>
+                    </TouchableOpacity>
+                  </View>
+                </Modal>
             </View>
 
-            <TouchableOpacity style={styles.button} >
+            <TouchableOpacity style={styles.button}>
                 <Text style={styles.buttonText}>Continue</Text>
             </TouchableOpacity>
         </View>
@@ -106,10 +188,10 @@ const mapStateToProps = state => {
   };
 };
 
-
 const mapDispatchToProps = {
   updateFormPhase,
   goToPreviousPhase,
+  resetFormPhase,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Finish);

@@ -1,8 +1,8 @@
 [
       {
         "id": "1",
-        "imageSource": "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg?resize=1200:*",
-        "recipeName": "Classic Hamburger Hamburger Hamburger Hamburger",
+        "image": "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg?resize=1200:*",
+        "name": "Classic Hamburger Hamburger Hamburger Hamburger",
         "favoriteNum": 10,
         "servings": 4,
         "tags": ["vegan", "main course"],
@@ -50,8 +50,8 @@
       },
       {
         "id": "2",
-        "imageSource": "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg?resize=1200:*",
-        "recipeName": "Recipe 2",
+        "image": "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg?resize=1200:*",
+        "name": "Recipe 2",
         "favoriteNum": 8,
         "servings": 3,
         "tags": ["main course", "vegan"],
@@ -99,8 +99,8 @@
       },
       {
         "id": "3",
-        "imageSource": "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg?resize=1200:*",
-        "recipeName": "Recipe 3",
+        "image": "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg?resize=1200:*",
+        "name": "Recipe 3",
         "favoriteNum": 12,
         "servings": 6,
         "tags": ["main course"],
@@ -148,8 +148,8 @@
       },
       {
         "id": "4",
-        "imageSource": "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg?resize=1200:*",
-        "recipeName": "Recipe 4",
+        "image": "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg?resize=1200:*",
+        "name": "Recipe 4",
         "favoriteNum": 7,
         "servings": 2,
         "tags": ["vegan"],
@@ -197,24 +197,24 @@
       },
       {
         "id": "5",
-        "imageSource": "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg?resize=1200:*",
-        "recipeName": "Recipe 5",
+        "image": "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg?resize=1200:*",
+        "name": "Recipe 5",
         "favoriteNum": 15,
         "servings": 5,
         "tags": ["dessert"]
       },
       {
         "id": "6",
-        "imageSource": "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg?resize=1200:*",
-        "recipeName": "Recipe 6",
+        "image": "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg?resize=1200:*",
+        "name": "Recipe 6",
         "favoriteNum": 11,
         "servings": 3,
         "tags": ["vegan", "dessert"]
       },
       {
         "id": "7",
-        "imageSource": "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg?resize=1200:*",
-        "recipeName": "Recipe 7",
+        "image": "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg?resize=1200:*",
+        "name": "Recipe 7",
         "favoriteNum": 9,
         "servings": 4,
         "tags": ["vegan", "dessert"]
@@ -222,8 +222,8 @@
       },
       {
         "id": "8",
-        "imageSource": "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg?resize=1200:*",
-        "recipeName": "Recipe 8",
+        "image": "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg?resize=1200:*",
+        "name": "Recipe 8",
         "favoriteNum": 5,
         "servings": 2,
         "tags": ["dessert"]
@@ -231,8 +231,8 @@
       },
       {
         "id": "9",
-        "imageSource": "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg?resize=1200:*",
-        "recipeName": "Recipe 9",
+        "image": "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg?resize=1200:*",
+        "name": "Recipe 9",
         "favoriteNum": 18,
         "servings": 6,
         "tags": ["vegan"]
@@ -240,8 +240,8 @@
       },
       {
         "id": "10",
-        "imageSource": "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg?resize=1200:*",
-        "recipeName": "Recipe 10",
+        "image": "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg?resize=1200:*",
+        "name": "Recipe 10",
         "favoriteNum": 14,
         "servings": 5,
         "tags": ["dessert"]
@@ -249,8 +249,8 @@
       },
       {
         "id": "11",
-        "imageSource": "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg?resize=1200:*",
-        "recipeName": "Recipe 11",
+        "image": "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg?resize=1200:*",
+        "name": "Recipe 11",
         "favoriteNum": 6,
         "servings": 3,
         "tags": ["main course"]
@@ -258,24 +258,24 @@
       },
       {
         "id": "12",
-        "imageSource": "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg?resize=1200:*",
-        "recipeName": "Recipe 12",
+        "image": "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg?resize=1200:*",
+        "name": "Recipe 12",
         "favoriteNum": 13,
         "servings": 4,
         "tags": ["main course"]
       },
       {
         "id": "13",
-        "imageSource": "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg?resize=1200:*",
-        "recipeName": "Recipe 12",
+        "image": "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg?resize=1200:*",
+        "name": "Recipe 12",
         "favoriteNum": 13,
         "servings": 4,
         "tags": ["main course","vegan"]
       },
       {
         "id": "14",
-        "imageSource": "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg?resize=1200:*",
-        "recipeName": "Recipe 12",
+        "image": "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg?resize=1200:*",
+        "name": "Recipe 12",
         "favoriteNum": 13,
         "servings": 4,
         "tags": ["main course", "vegan"]

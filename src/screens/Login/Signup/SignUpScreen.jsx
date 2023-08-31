@@ -15,6 +15,8 @@ import {styles} from './styles';
 import {Input, SeparationComponent} from '../../../components';
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import firestore from '@react-native-firebase/firestore';
+import { firebase } from "@react-native-firebase/firestore"
 
 const image = require('../../../images/icon.jpg');
 
@@ -48,28 +50,35 @@ let registerSchema = yup.object().shape({
 
 export const SignUpScreen = ({navigation}) => {
   return (
-    <Formik
+<Formik
       validationSchema={registerSchema}
-      initialValues={{email: '', password: '', username: ''}}
+      initialValues={{ email: '', password: '', username: '' }}
       onSubmit={async values => {
-        await auth()
-          .createUserWithEmailAndPassword(values.email, values.password)
-          .then(() => Alert.alert('Succesfull', 'User created!!', [
+        try {
+          // Create user account
+          const { user } = await auth().createUserWithEmailAndPassword(values.email, values.password);
+
+          // Use the user's UID as the document ID in Firestore
+          await firestore().collection('users').doc(user.uid).set({
+            username: values.username,
+            email: values.email,
+          });
+
+          Alert.alert('Success', 'User created!', [
             {
               text: 'Ok', onPress: () => console.log('ok, pressed')
             }
-          ]))
-          .catch(error => {
-            if (error.code === 'auth/email-already-in-use') {
-              Alert.alert('Error','That email address is already in use!')
-            }
-
-            if (error.code === 'auth/invalid-email') {
-              Alert.alert('Error', 'That email address is invalid!');
-            }
-
+          ]);
+        } catch (error) {
+          // Handle error
+          if (error.code === 'auth/email-already-in-use') {
+            Alert.alert('Error', 'That email address is already in use!')
+          } else if (error.code === 'auth/invalid-email') {
+            Alert.alert('Error', 'That email address is invalid!');
+          } else {
             console.error(error);
-          });
+          }
+        }
       }}>
       {({
         handleChange,

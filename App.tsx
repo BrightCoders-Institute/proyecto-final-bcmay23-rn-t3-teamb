@@ -24,10 +24,9 @@ function App(){
     <Provider store={store}>
       <Stack.Navigator>
         {
-          //user
-          //? <Stack.Screen name='Main' component={MainLayout} options={{headerShown: false}}/>
-          //: <Stack.Screen name='Login' component={LoginLayout} options={{headerShown: false}}/> 
-          <Stack.Screen name='Main' component={MainLayout} options={{headerShown: false}}/>
+          user
+          ? <Stack.Screen name='Main' component={MainLayout} options={{headerShown: false}}/>
+          : <Stack.Screen name='Login' component={LoginLayout} options={{headerShown: false}}/> 
         }
         
       </Stack.Navigator>
