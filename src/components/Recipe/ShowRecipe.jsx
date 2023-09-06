@@ -6,9 +6,9 @@ import Modal from 'react-native-modal';
 import DetailsModal from '../DetailsModal/DetailsModal';
 import { TouchableOpacity } from 'react-native';
 
-const ShowRecipe = ({ recipeData, context }) => {
+const ShowRecipe = ({ recipeData, context, titleKey }) => {
   const [isModalVisible, setModalVisible] = useState(false);
-
+  
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
@@ -17,16 +17,54 @@ const ShowRecipe = ({ recipeData, context }) => {
     setModalVisible(false);
   };
 
-  const { name, image, prepTime, servings, favoriteNum } = recipeData;
+  const { name, image, prepTime, servings, favoriteNum, readyInMinutes, extendedIngredients, instructions, analyzedInstructions,aggregateLikes   } = recipeData;
+  const formattedServings = servings !== undefined ? servings.toString() : '';
+  const recipeTitle = recipeData[titleKey];
+  const summaryWithoutTags = recipeData.summary ? recipeData.summary.replace(/<b>|<\/b>/gi, '') : '';
+  const match = summaryWithoutTags.match(/^(.*?)(?=It is brought to you by Foodista)/s);
+  const caloriesDescription = match && match[1] ? match[1] : summaryWithoutTags;
+  
+  const getCalories = () => {
+    const description = recipeData.summary || '';
+    const match = description.match(/<b>(\d+) calories<\/b>/i);
+  
+    if (match && match[1]) {
+      const calories = parseInt(match[1]);
+      return calories;
+    }
+    return null; 
+  };
 
-  const maxLength = 14;
+  const calories = getCalories();
+
+  const formatRecipeData = (data) => {
+    if (!data) {
+      return null;
+    }
+  
+    const formattedData = {
+      title: data.title || data.name || '', 
+      image: data.image || '',
+      description: data.description || '',
+      summary: caloriesDescription || '',
+      servings: data.servings || '',
+      prepTime: data.prepTime || data.readyInMinutes || '',
+      calories: data.calories || getCalories() || '', 
+      instructions: data.analyzedInstructions || [],
+      instructionsdb: data.instructions || '',
+      ingredients: data.ingredients || data.extendedIngredients || [], 
+    };
+    return formattedData;
+  };
+
+  const maxLength = 12;
   const Recipename =
-    name.length > maxLength ? name.substring(0, maxLength) + '...' : name;
+  recipeTitle.length > maxLength ? recipeTitle.substring(0, maxLength) + '...' : recipeTitle;
 
-    const iconProps =
-    context === 'profile'
-      ? { iconName: 'clock', iconColor: 'yellow' }
-      : { iconName: 'star', iconColor: 'yellow' };
+  const iconProps =
+  context === 'profile'
+    ? { iconName: 'clock', iconColor: 'yellow' }
+    : { iconName: 'star', iconColor: 'yellow' };
 
   return (
     <View>
@@ -46,7 +84,7 @@ const ShowRecipe = ({ recipeData, context }) => {
                     style={styles.icon}
                   />                
                 <Text style={styles.text}>
-                  {context === 'profile' ? prepTime : favoriteNum}
+                  {context === 'profile' ? prepTime : aggregateLikes}
                 </Text>
               </View>
               <View style={styles.detailRow}>
@@ -56,7 +94,7 @@ const ShowRecipe = ({ recipeData, context }) => {
                   color="yellow"
                   style={styles.icon}
                 />
-                <Text style={styles.text}>{servings}</Text>
+                <Text style={styles.text}>{formattedServings}</Text>
               </View>
             </View>
           </View>
@@ -64,7 +102,7 @@ const ShowRecipe = ({ recipeData, context }) => {
       </TouchableOpacity>
 
       <Modal isVisible={isModalVisible} onBackdropPress={closeModal} animationType='slide'>
-        <DetailsModal onClose={closeModal} recipeData={recipeData} />
+        <DetailsModal onClose={closeModal} recipeData={formatRecipeData(recipeData)} context={context} />
       </Modal>
     </View>
   );
