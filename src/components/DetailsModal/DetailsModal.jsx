@@ -4,28 +4,30 @@ import Icon from "react-native-vector-icons/AntDesign"
 import Icon2 from "react-native-vector-icons/MaterialIcons"
 import Icon3 from "react-native-vector-icons/FontAwesome5"
 import Icon4 from "react-native-vector-icons/Ionicons"
+import Icon5 from "react-native-vector-icons/Entypo"
+import Icon6 from "react-native-vector-icons/FontAwesome6"
+
 import {styles} from "./styles" 
 
 const DetailsModal = ({ onClose, recipeData, context }) => {
-    const [selectedDataType, setSelectedDataType] = useState('ingredients');
+  const [selectedDataType, setSelectedDataType] = useState('ingredients');
     
-
-    const toggleDataType = (dataType) => {
-      setSelectedDataType(dataType);
-    };
+  const toggleDataType = (dataType) => {
+    setSelectedDataType(dataType);
+  };
   
-    if (!recipeData) {
-      return null;
-    }
+  if (!recipeData) {
+    return null;
+  }
 
-    console.log(recipeData)
+  console.log(recipeData)
   
-    const maxLength = 30;
-    const recipeTitle = recipeData.title || recipeData.name || '';
-    const Recipename =
-      recipeTitle.length > maxLength
-        ? recipeTitle.substring(0, maxLength) + '...'
-        : recipeTitle;
+  const maxLength = 30;
+  const recipeTitle = recipeData.title || recipeData.name || '';
+  const Recipename =
+    recipeTitle.length > maxLength
+      ? recipeTitle.substring(0, maxLength) + '...'
+      : recipeTitle;
   
     return (
       <View style={styles.modalContainer}>
@@ -35,7 +37,7 @@ const DetailsModal = ({ onClose, recipeData, context }) => {
               <Icon2 name="favorite" color="red" size={40} />
             </TouchableOpacity>
             <TouchableOpacity onPress={onClose}>
-              <Icon name="closecircle" color="#FFC300" size={40} />
+              <Icon name="closecircle" color="#000814" size={40} />
             </TouchableOpacity>
           </View>
           <View style={styles.topContainer}>
@@ -61,11 +63,11 @@ const DetailsModal = ({ onClose, recipeData, context }) => {
           </View>
           <View style={styles.iconCenterContainer}>
             <View style={styles.iconCenter}>
-              <Icon name="clockcircle" color="#FFC300" size={30} />
+              <Icon6 name="clock" color="#FFC300" size={29} />
               <Text style={styles.iconText}>{recipeData.prepTime || ''}</Text>
             </View>
             <View style={styles.iconCenter}>
-              <Icon3 name="user-alt" color="#FFC300" size={30} />
+              <Icon5 name="bowl" color="#FFC300" size={30} />
               <Text style={styles.iconText}>{recipeData.servings || ''}</Text>
             </View>
             <View style={styles.iconCenter}>
@@ -77,36 +79,31 @@ const DetailsModal = ({ onClose, recipeData, context }) => {
           <View style={styles.bottomContainer}>
             <ScrollView style={styles.bottomTextContainer}>
               {selectedDataType === 'instructions' ? (
-
                 <View>
-                {context === 'home' ? (
-                <View>
-                {recipeData.instructions.map((instructionGroup, groupIndex) => (
-                  <View key={groupIndex}>
-                    <Text style={styles.instructionsGroupTitle}>{instructionGroup.name}</Text>
-                    {instructionGroup.steps.map((step, stepIndex) => (
-                      <View style={styles.instructionsContainer} key={stepIndex}>
-                        <Text style={styles.instructions}>{step.step}</Text>
+                  {context === 'home' ? (
+                    <View>
+                    {recipeData.instructions.map((instructionGroup, groupIndex) => (
+                      <View key={groupIndex}>
+                        <Text style={styles.instructionsGroupTitle}>{instructionGroup.name}</Text>
+                        {instructionGroup.steps.map((step, stepIndex) => (
+                          <View style={styles.instructionsContainer} key={stepIndex}>
+                            <Text style={styles.instructions}>{step.step}</Text>
+                          </View>
+                        ))}
                       </View>
                     ))}
-                  </View>
-                ))}
+                    </View>
+                  ) : (
+                    <View>
+                      <View style={styles.instructionsContainer}>
+                        <Text style={styles.instructions}>
+                          {recipeData.instructionsdb || ''}
+                        </Text>
+                      </View>
+                    </View>
+                  )}
                 </View>
-                ) : (
-                <View>
-                  <View style={styles.instructionsContainer}>
-                    <Text style={styles.instructions}>
-                      {recipeData.instructionsdb || ''}
-                    </Text>
-                  </View>
-                </View>
-                )}
-                </View>
-
-
               ) : (
-
-                
                 <View>
                   {context === 'home' ? (
                     <View>
@@ -116,7 +113,7 @@ const DetailsModal = ({ onClose, recipeData, context }) => {
                         key={index}
                       >
                         <Text style={styles.ingredients}>
-                          {`${ingredient.amount} ${ingredient.unit}`}
+                          {`${ingredient.amount} ${ingredient.unit} `}
                         </Text>
                         <Text style={styles.ingredients}>{ingredient.name}</Text>
                       </View>
@@ -125,16 +122,13 @@ const DetailsModal = ({ onClose, recipeData, context }) => {
                   ) : (
 
                     <View>
-                      {recipeData.ingredients.map((ingredient, index) => (
-                        <View style={styles.ingredientsContainer} key={index}>
-                          <Text style={styles.ingredients}>{ingredient.quantity} </Text>
-                          <Text style={styles.ingredients}>{ingredient.ingredient}</Text>
-                        </View>
-                      ))}
+                    {recipeData.ingredients.map((ingredient, index) => (
+                      <View style={styles.ingredientsContainer} key={index}>
+                        <Text style={styles.ingredients}>{ingredient.quantity} </Text>
+                        <Text style={styles.ingredients}>{ingredient.ingredient}</Text>
+                      </View>
+                    ))}
                     </View>
-
-
-                  
                   )}
                 </View>
               )}

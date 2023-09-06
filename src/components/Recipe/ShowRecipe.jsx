@@ -9,7 +9,6 @@ import { TouchableOpacity } from 'react-native';
 const ShowRecipe = ({ recipeData, context, titleKey }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   
-
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
@@ -18,16 +17,13 @@ const ShowRecipe = ({ recipeData, context, titleKey }) => {
     setModalVisible(false);
   };
 
-  const { name, image, prepTime, servings, favoriteNum, readyInMinutes, extendedIngredients, instructions, analyzedInstructions   } = recipeData;
+  const { name, image, prepTime, servings, favoriteNum, readyInMinutes, extendedIngredients, instructions, analyzedInstructions,aggregateLikes   } = recipeData;
   const formattedServings = servings !== undefined ? servings.toString() : '';
   const recipeTitle = recipeData[titleKey];
-
   const summaryWithoutTags = recipeData.summary ? recipeData.summary.replace(/<b>|<\/b>/gi, '') : '';
-
   const match = summaryWithoutTags.match(/^(.*?)(?=It is brought to you by Foodista)/s);
   const caloriesDescription = match && match[1] ? match[1] : summaryWithoutTags;
   
-
   const getCalories = () => {
     const description = recipeData.summary || '';
     const match = description.match(/<b>(\d+) calories<\/b>/i);
@@ -36,13 +32,10 @@ const ShowRecipe = ({ recipeData, context, titleKey }) => {
       const calories = parseInt(match[1]);
       return calories;
     }
-  
-    return null; // Retorna null si no se encuentra el formato esperado
+    return null; 
   };
 
   const calories = getCalories();
-
-  console.log('Valor de calories:', calories); // Esto mostrará las calorías extraídas
 
   const formatRecipeData = (data) => {
     if (!data) {
@@ -50,18 +43,17 @@ const ShowRecipe = ({ recipeData, context, titleKey }) => {
     }
   
     const formattedData = {
-      title: data.title || data.name || '', // Asegurarse de que ambas fuentes tengan una propiedad 'title' o 'name'
+      title: data.title || data.name || '', 
       image: data.image || '',
       description: data.description || '',
       summary: caloriesDescription || '',
       servings: data.servings || '',
       prepTime: data.prepTime || data.readyInMinutes || '',
-      calories: data.calories || getCalories() || '', // Usar el valor de calorías extraído
+      calories: data.calories || getCalories() || '', 
       instructions: data.analyzedInstructions || [],
       instructionsdb: data.instructions || '',
-      ingredients: data.ingredients || data.extendedIngredients || [], // Asegurarse de que ambas fuentes tengan una propiedad 'ingredients'
+      ingredients: data.ingredients || data.extendedIngredients || [], 
     };
-  
     return formattedData;
   };
 
@@ -69,10 +61,10 @@ const ShowRecipe = ({ recipeData, context, titleKey }) => {
   const Recipename =
   recipeTitle.length > maxLength ? recipeTitle.substring(0, maxLength) + '...' : recipeTitle;
 
-    const iconProps =
-    context === 'profile'
-      ? { iconName: 'clock', iconColor: 'yellow' }
-      : { iconName: 'star', iconColor: 'yellow' };
+  const iconProps =
+  context === 'profile'
+    ? { iconName: 'clock', iconColor: 'yellow' }
+    : { iconName: 'star', iconColor: 'yellow' };
 
   return (
     <View>
@@ -92,7 +84,7 @@ const ShowRecipe = ({ recipeData, context, titleKey }) => {
                     style={styles.icon}
                   />                
                 <Text style={styles.text}>
-                  {context === 'profile' ? prepTime : readyInMinutes}
+                  {context === 'profile' ? prepTime : aggregateLikes}
                 </Text>
               </View>
               <View style={styles.detailRow}>

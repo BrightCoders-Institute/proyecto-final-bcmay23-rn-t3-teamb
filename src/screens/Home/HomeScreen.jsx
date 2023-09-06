@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, Text, TouchableOpacity, Image } from 'react-native';
 import ShowRecipe from '../../components/Recipe/ShowRecipe';
-import recipe from '../../assets/recipes.json';
 import PopularRecipe from '../../components/PopularRecipe/PopularRecipe';
 import ButtonTag from '../../components/ButtonTag/ButtonTag';
 import Icon from "react-native-vector-icons/FontAwesome5";
 import {styles} from "./styles"
 import { API } from '../../database';
+import { MealTypes } from '../../constants/tags';
 
 export const HomeScreen = () => {
   const [data, setData] = useState([]);
   const [selectedTag, setSelectedTag] = useState(null);
   const image = require('../../images/icon.jpg');
   
-
   useEffect(() => {
     // Cargar 20 recetas de la API de Spoonacular al montar el componente
     loadRecipes();
@@ -27,12 +26,9 @@ export const HomeScreen = () => {
           addRecipeInformation: false,
           instructionsRequired: false,
           fillIngredients: false,
-          showIngredients: false, // Incluye la lista de ingredientes
-          
-          
+          showIngredients: false, 
         },
       });
-
       setData(response.data.recipes);
     } catch (error) {
       console.error('Error cargando recetas:', error);
@@ -41,22 +37,19 @@ export const HomeScreen = () => {
 
   const handleSortByTag = async (tag) => {
     setSelectedTag(tag);
-  
     try {
       const response = await API.get('/complexSearch', {
         params: {
           number: 1,
           addRecipeInformation: true,
           instructionsRequired: true,
-          fillIngredients: true, // Incluye la lista de ingredientes
+          fillIngredients: true, 
           addRecipeNutrition: true,
           calories: true,
           query: tag
         },
       });
       console.log("data:",response.data.results);
-
-      // Establece los datos en el estado 'data'
       setData(response.data.results);
     } catch (error) {
       console.error('Error en la solicitud:', error);
@@ -65,7 +58,6 @@ export const HomeScreen = () => {
 
   const handleShowAllRecipes = async () => {
     setSelectedTag(null);
-    
     try {
       const response = await API.get('/random', {
         params: {
@@ -73,13 +65,10 @@ export const HomeScreen = () => {
           addRecipeInformation: false,
           instructionsRequired: false,
           fillIngredients: false,
-          showIngredients: false // Incluye la lista de ingredientes
-          
+          showIngredients: false 
         },
       });
-
       console.log('Datos filtrados:', response.data.recipes);
-
       setData(response.data.recipes);
     } catch (error) {
       console.error('Error en la solicitud:', error);
@@ -101,10 +90,7 @@ export const HomeScreen = () => {
 
         </View>
         <PopularRecipe
-          image="https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg?resize=1200:*"
-          name="recipe"
-          prepTime="12"
-          servings="2"
+           recipeData={data} context="home" titleKey="title"
         />
       </View>
 
@@ -114,31 +100,14 @@ export const HomeScreen = () => {
         </TouchableOpacity>
 
         <View style={styles.sortButtons}>
-          <ButtonTag
-            tag="vegan"
-            onPress={() => handleSortByTag('vegan')}
-            isSelected={selectedTag === 'vegan'}
-          />
-          <ButtonTag
-            tag="dessert"
-            onPress={() => handleSortByTag('dessert')}
-            isSelected={selectedTag === 'dessert'}
-          />
-          <ButtonTag
-            tag="main course"
-            onPress={() => handleSortByTag('main course')}
-            isSelected={selectedTag === 'main course'}
-          />
-          <ButtonTag
-            tag="gluten free"
-            onPress={() => handleSortByTag('gluten free')}
-            isSelected={selectedTag === 'gluten free'}
-          />
-          <ButtonTag
-            tag="drinks"
-            onPress={() => handleSortByTag('drinks')}
-            isSelected={selectedTag === 'drinks'}
-          />
+          {MealTypes.map((tag) => (
+            <ButtonTag
+              key={tag}
+              tag={tag} 
+              onPress={() => handleSortByTag(tag)} 
+              isSelected={selectedTag === tag} 
+            />
+          ))}
         </View>
       </ScrollView>
 
