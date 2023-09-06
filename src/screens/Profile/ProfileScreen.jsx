@@ -65,7 +65,7 @@ export const ProfileScreen = () => {
             <View style={styles.row}>
               {userRecipes.map((recipeData, index) => (
                 <View key={index} style={styles.column}>
-                  <ShowRecipe recipeData={recipeData} context="profile" />
+                  <ShowRecipe recipeData={recipeData} context="profile" titleKey="name"/>
                 </View>
               ))}
             </View>

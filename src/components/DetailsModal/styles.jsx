@@ -71,27 +71,29 @@ export const styles = StyleSheet.create({
       borderRadius: 10
     },
     instructionsContainer: {
-      borderWidth: 1
+      borderWidth: 0
     },
     instructions: {
       paddingVertical: 10,
       paddingHorizontal: 20,
       color: "black",
-      fontSize: 20,
+      fontSize: 15,
       fontWeight: "600",
-      paddingVertical: 8
+      paddingVertical: 8,
     },
     ingredientsContainer: {
+      flex: 1,
       flexDirection: "row",
-      justifyContent: "space-evenly",
-      alignItems: "flex-start",
-      borderWidth: 1
+      justifyContent: "center",
+      borderWidth: 1,
+
     },
     ingredients:{
       color: "black",
-      fontSize: 20,
+      fontSize: 15,
       fontWeight: "600",
-      paddingVertical: 8
+      paddingVertical: 8,
+
     },
     dataTypeButtons: {
       flexDirection: "row",
