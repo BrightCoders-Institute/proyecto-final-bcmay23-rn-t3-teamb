@@ -17,11 +17,11 @@ const ShowRecipe = ({ recipeData, context }) => {
     setModalVisible(false);
   };
 
-  const { name, image, prepTime, servings, favoriteNum } = recipeData;
+  const { title, image, prepTime, servings, favoriteNum } = recipeData;
 
   const maxLength = 14;
   const Recipename =
-    name.length > maxLength ? name.substring(0, maxLength) + '...' : name;
+    title.length > maxLength ? title.substring(0, maxLength) + '...' : title;
 
     const iconProps =
     context === 'profile'
