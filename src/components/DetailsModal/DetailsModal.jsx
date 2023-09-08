@@ -28,19 +28,31 @@ const DetailsModal = ({ onClose, recipeData, context }) => {
 
   const addRecipeToFavorites = async (recipeData) => {
     try {
-      const userId = auth().currentUser?.uid; // Obtén el ID del usuario actualmente autenticado
+      const userId = auth().currentUser?.uid;
       const favoritesRef = firebase.firestore().collection('favorites');
-      // Crea un documento en la colección "favorites" con los datos de la receta y el ID del usuario
-      await favoritesRef.add({
-        userId: userId,
-        recipeData: recipeData,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      });
+      
+      // Check if the recipe is already in favorites
+      const existingFavorite = await favoritesRef
+        .where('userId', '==', userId)
+        .where('recipeData.title', '==', recipeData.title)
+        .get();
   
-      // Puedes mostrar una notificación o realizar alguna acción adicional después de agregar la receta a favoritos.
-      console.log('Receta agregada a favoritos con éxito');
+      // If the recipe is in favorites, remove it; otherwise, add it
+      if (existingFavorite.empty) {
+        await favoritesRef.add({
+          userId: userId,
+          recipeData: recipeData,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        });
+        console.log('Receta agregada a favoritos con éxito');
+      } else {
+        existingFavorite.forEach(async (doc) => {
+          await doc.ref.delete();
+          console.log('Receta eliminada de favoritos con éxito');
+        });
+      }
     } catch (error) {
-      console.error('Error al agregar la receta a favoritos:', error);
+      console.error('Error al agregar o eliminar la receta de favoritos:', error);
     }
   };
 
