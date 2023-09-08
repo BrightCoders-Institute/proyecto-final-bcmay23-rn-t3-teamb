@@ -6,11 +6,17 @@ import Icon3 from "react-native-vector-icons/FontAwesome5"
 import Icon4 from "react-native-vector-icons/Ionicons"
 import Icon5 from "react-native-vector-icons/Entypo"
 import Icon6 from "react-native-vector-icons/FontAwesome6"
-
+import auth from '@react-native-firebase/auth';
+import firebase from '@react-native-firebase/app';
+import '@react-native-firebase/firestore';
 import {styles} from "./styles" 
 
 const DetailsModal = ({ onClose, recipeData, context }) => {
   const [selectedDataType, setSelectedDataType] = useState('ingredients');
+
+  if (!firebase.apps.length) {
+    firebase.initializeApp(yourFirebaseConfig);
+  }
     
   const toggleDataType = (dataType) => {
     setSelectedDataType(dataType);
@@ -19,6 +25,24 @@ const DetailsModal = ({ onClose, recipeData, context }) => {
   if (!recipeData) {
     return null;
   }
+
+  const addRecipeToFavorites = async (recipeData) => {
+    try {
+      const userId = auth().currentUser?.uid; // Obtén el ID del usuario actualmente autenticado
+      const favoritesRef = firebase.firestore().collection('favorites');
+      // Crea un documento en la colección "favorites" con los datos de la receta y el ID del usuario
+      await favoritesRef.add({
+        userId: userId,
+        recipeData: recipeData,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+  
+      // Puedes mostrar una notificación o realizar alguna acción adicional después de agregar la receta a favoritos.
+      console.log('Receta agregada a favoritos con éxito');
+    } catch (error) {
+      console.error('Error al agregar la receta a favoritos:', error);
+    }
+  };
 
   console.log(recipeData)
   
@@ -33,9 +57,9 @@ const DetailsModal = ({ onClose, recipeData, context }) => {
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <View style={styles.topIconContainer}>
-            <TouchableOpacity>
-              <Icon2 name="favorite" color="red" size={40} />
-            </TouchableOpacity>
+          <TouchableOpacity onPress={() => addRecipeToFavorites(recipeData)}>
+            <Icon2 name="favorite" color="red" size={40} />
+          </TouchableOpacity>
             <TouchableOpacity onPress={onClose}>
               <Icon name="closecircle" color="#000814" size={40} />
             </TouchableOpacity>
@@ -50,7 +74,7 @@ const DetailsModal = ({ onClose, recipeData, context }) => {
           <View style={styles.topTextContainer}>
             <Text style={styles.name}>{Recipename}</Text>
             <ScrollView style={styles.descriptionContainer}>
-              {context == 'home' ? (
+              {context === 'home' || context == 'favorite'? (
                 <Text style={styles.description}>
                   {recipeData.summary || ''}
                 </Text>
@@ -84,7 +108,6 @@ const DetailsModal = ({ onClose, recipeData, context }) => {
                     <View>
                     {recipeData.instructions.map((instructionGroup, groupIndex) => (
                       <View key={groupIndex}>
-                        <Text style={styles.instructionsGroupTitle}>{instructionGroup.name}</Text>
                         {instructionGroup.steps.map((step, stepIndex) => (
                           <View style={styles.instructionsContainer} key={stepIndex}>
                             <Text style={styles.instructions}>{step.step}</Text>
@@ -93,6 +116,20 @@ const DetailsModal = ({ onClose, recipeData, context }) => {
                       </View>
                     ))}
                     </View>
+                  ) : context === "favorite" ? (
+
+                    <View>
+                    {recipeData.instructionsdb.map((instructionGroup, groupIndex) => (
+                      <View key={groupIndex}>
+                        {instructionGroup.steps.map((step, stepIndex) => (
+                          <View style={styles.instructionsContainer} key={stepIndex}>
+                            <Text style={styles.instructions}>{step.step}</Text>
+                          </View>
+                        ))}
+                      </View>
+                    ))}
+                    </View>
+
                   ) : (
                     <View>
                       <View style={styles.instructionsContainer}>
@@ -105,7 +142,7 @@ const DetailsModal = ({ onClose, recipeData, context }) => {
                 </View>
               ) : (
                 <View>
-                  {context === 'home' ? (
+                  {context === 'home' || context === 'favorite'? (
                     <View>
                     {recipeData.ingredients.map((ingredient, index) => (
                       <View
@@ -120,7 +157,6 @@ const DetailsModal = ({ onClose, recipeData, context }) => {
                     ))}
                     </View>
                   ) : (
-
                     <View>
                     {recipeData.ingredients.map((ingredient, index) => (
                       <View style={styles.ingredientsContainer} key={index}>

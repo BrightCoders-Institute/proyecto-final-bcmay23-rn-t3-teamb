@@ -52,8 +52,10 @@ const ShowRecipe = ({ recipeData, context, titleKey }) => {
       calories: data.calories || getCalories() || '', 
       instructions: data.analyzedInstructions || [],
       instructionsdb: data.instructions || '',
-      ingredients: data.ingredients || data.extendedIngredients || [], 
+      ingredients: data.ingredients || data.extendedIngredients || [],
+      likes: data.aggregateLikes || '', 
     };
+
     return formattedData;
   };
 
@@ -84,7 +86,7 @@ const ShowRecipe = ({ recipeData, context, titleKey }) => {
                     style={styles.icon}
                   />                
                 <Text style={styles.text}>
-                  {context === 'profile' ? prepTime : aggregateLikes}
+                {context === 'profile' ? prepTime : (context === 'favorite' ? recipeData.likes : aggregateLikes)}
                 </Text>
               </View>
               <View style={styles.detailRow}>

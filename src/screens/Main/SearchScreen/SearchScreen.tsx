@@ -55,7 +55,7 @@ export const SearchScreen = () => {
               data && searchQuery ? data.map((item, index) => (<ShowRecipe titleKey={'title'} recipeData={item} context="home" key={index}/>)) : <Text>Search something</Text>
             }
           </View>
-          {/* <Button title='LogOut' onPress={() => { auth().signOut(); signOut() }} /> */}
+          <Button title='LogOut' onPress={() => { auth().signOut(); signOut() }} />
         </View>
       </ScrollView>
     </SafeAreaView>

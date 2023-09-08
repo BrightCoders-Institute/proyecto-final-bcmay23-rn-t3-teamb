@@ -14,6 +14,8 @@ export const ProfileScreen = () => {
   const imageProfile = require('../../images/profile.jpeg');
   const [userRecipesCount, setUserRecipesCount] = useState(0);
   const userId = auth().currentUser?.uid;
+  const [userLikesCount, setUserLikesCount] = useState(0);
+
 
   useEffect(() => {
     if (userId) {
@@ -38,6 +40,11 @@ export const ProfileScreen = () => {
     }
   }, [userId]);
 
+  const likesRef = firebase.firestore().collection('favorites').where('userId', '==', userId);
+  likesRef.get().then((querySnapshot) => {
+    setUserLikesCount(querySnapshot.size); // Update likes count
+  });
+
   return (
     <View style={styles.profileContainer}>
         <View style={styles.imageContainer}>
@@ -55,7 +62,7 @@ export const ProfileScreen = () => {
                 <Text style={styles.recipesText}>Recipes</Text>
             </View>
             <View style={styles.likesinnerContainer}>
-                <Text style={styles.recipesNumber}>129</Text>
+                <Text style={styles.recipesNumber}>{userLikesCount}</Text>
                 <Text style={styles.recipesText}>Favorites</Text>
             </View>
         </View>
