@@ -5,9 +5,11 @@ import envs from '../config/env';
 const {API_KEY, API_HOST} = envs;
 
 export const API = axios.create({
-  baseURL: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes',
+  baseURL: 'https://api.spoonacular.com/recipes',
+  params: {
+    apiKey: "0a190ca3a52b45a59e83b457a538e2b9",
+  },
   headers: {
     'X-RapidAPI-Host': API_HOST,
-    'X-RapidAPI-Key': API_KEY,
   },
 });

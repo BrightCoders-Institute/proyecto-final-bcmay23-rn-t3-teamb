@@ -8,14 +8,19 @@ import {styles} from "./styles"
 import { API } from '../../database';
 import { MealTypes } from '../../constants/tags';
 
+
 export const HomeScreen = () => {
   const [data, setData] = useState([]);
   const [selectedTag, setSelectedTag] = useState(null);
   const image = require('../../images/icon.jpg');
-  
+  const [randomRecipe, setRandomRecipe] = useState(null); // Store the random recipe separately
+
+
   useEffect(() => {
-    // Cargar 20 recetas de la API de Spoonacular al montar el componente
+    // Load 20 recipes for the rest of the component
     loadRecipes();
+    // Load the initial random recipe
+    loadRandomRecipe();
   }, []);
 
   const loadRecipes = async () => {
@@ -23,15 +28,32 @@ export const HomeScreen = () => {
       const response = await API.get('/random', {
         params: {
           number: 1,
-          addRecipeInformation: false,
-          instructionsRequired: false,
-          fillIngredients: false,
-          showIngredients: false, 
+          addRecipeInformation: true,
+          instructionsRequired: true,
+          fillIngredients: true,
+          showIngredients: true, 
         },
       });
       setData(response.data.recipes);
     } catch (error) {
       console.error('Error cargando recetas:', error);
+    }
+  };
+
+  const loadRandomRecipe = async () => {
+    try {
+      const response = await API.get('/random', {
+        params: {
+          number: 1, // Request only 1 random recipe
+          addRecipeInformation: true,
+          instructionsRequired: true,
+          fillIngredients: true,
+          showIngredients: true,
+        },
+      });
+      setRandomRecipe(response.data.recipes[0]); // Store the random recipe separately
+    } catch (error) {
+      console.error('Error cargando receta:', error);
     }
   };
 
@@ -87,11 +109,10 @@ export const HomeScreen = () => {
           <Text style={styles.recipedaytext}>Recipe of the day! </Text>
           <Icon name="greater-than" color="yellow" size={25}/>
           <Icon name="greater-than" color="yellow" size={25}/>
-
         </View>
-        <PopularRecipe
-           recipeData={data} context="home" titleKey="title"
-        />
+        {randomRecipe && (
+          <PopularRecipe recipeData={randomRecipe} context="home" titleKey="title" />
+        )}
       </View>
 
       <ScrollView horizontal style={styles.buttonscontainer}>

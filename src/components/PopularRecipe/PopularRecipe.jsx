@@ -7,24 +7,23 @@ import Modal from 'react-native-modal';
 import DetailsModal from '../DetailsModal/DetailsModal';
 
 const PopularRecipe = ({ recipeData, titleKey, context }) => {
-  const { image, title, aggregateLikes, servings } = recipeData;
-
   const [isModalVisible, setModalVisible] = useState(false);
-  
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
-
-  const closeModal = () => {
-    setModalVisible(false);
-  };
-
+  const { name, image, prepTime, servings, favoriteNum, readyInMinutes, extendedIngredients, instructions, analyzedInstructions,aggregateLikes   } = recipeData;
   const formattedServings = servings !== undefined ? servings.toString() : '';
   const recipeTitle = recipeData[titleKey];
   const summaryWithoutTags = recipeData.summary ? recipeData.summary.replace(/<b>|<\/b>/gi, '') : '';
   const match = summaryWithoutTags.match(/^(.*?)(?=It is brought to you by Foodista)/s);
   const caloriesDescription = match && match[1] ? match[1] : summaryWithoutTags;
-  
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+  console.log(recipeData)
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
   const getCalories = () => {
     const description = recipeData.summary || '';
     const match = description.match(/<b>(\d+) calories<\/b>/i);
@@ -35,6 +34,8 @@ const PopularRecipe = ({ recipeData, titleKey, context }) => {
     }
     return null; 
   };
+
+  const calories = getCalories();
 
   const formatRecipeData = (data) => {
     if (!data) {
@@ -51,29 +52,36 @@ const PopularRecipe = ({ recipeData, titleKey, context }) => {
       calories: data.calories || getCalories() || '', 
       instructions: data.analyzedInstructions || [],
       instructionsdb: data.instructions || '',
-      ingredients: data.ingredients || data.extendedIngredients || [], 
+      ingredients: data.ingredients || data.extendedIngredients || [],
+      likes: data.aggregateLikes || '', 
     };
+
     return formattedData;
   };
 
+  const maxLength = 12;
+  const Recipename =
+  recipeTitle.length > maxLength ? recipeTitle.substring(0, maxLength) + '...' : recipeTitle;
+
+
   return (
     <View>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={toggleModal}>
     <View style={styles.container}>
       <View style={styles.detailsContainer}>
         <View style={styles.detailRow}>
-          <Text style={styles.name}>{title}</Text>
+          <Text style={styles.name}>{Recipename}</Text>
         </View>
         <View style={styles.detailRow}>
           <Icon name="star" size={20} color="yellow" style={styles.icon} />
-          <Text style={styles.text}>{aggregateLikes}</Text>
+          <Text style={styles.text}>{recipeData.aggregateLikes}</Text>
         </View>
         <View style={styles.detailRow}>
           <Icon name="user-alt" size={20} color="yellow" style={styles.icon} />
-          <Text style={styles.text}>{servings}</Text>
+          <Text style={styles.text}>{recipeData.servings}</Text>
         </View>
       </View>
-      <Image source={{ uri: image }} style={styles.image} />
+      <Image source={{ uri: recipeData.image }} style={styles.image} />
     </View>
     </TouchableOpacity>
 
