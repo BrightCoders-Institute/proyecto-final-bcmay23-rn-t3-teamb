@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image, ScrollView } from 'react-native';
 import Icon from "react-native-vector-icons/AntDesign"
 import Icon2 from "react-native-vector-icons/MaterialIcons"
@@ -10,9 +10,14 @@ import auth from '@react-native-firebase/auth';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/firestore';
 import {styles} from "./styles" 
+import {addToFavorites, removeFromFavorites} from "../../actions/actions"
 
 const DetailsModal = ({ onClose, recipeData, context }) => {
   const [selectedDataType, setSelectedDataType] = useState('ingredients');
+
+  const [isFavorite, setIsFavorite] = useState(false); // Track if the recipe is in favorites
+
+
 
   if (!firebase.apps.length) {
     firebase.initializeApp(yourFirebaseConfig);
@@ -26,17 +31,38 @@ const DetailsModal = ({ onClose, recipeData, context }) => {
     return null;
   }
 
+  useEffect(() => {
+    // Check if the recipe is in favorites when the component mounts
+    checkIfRecipeIsInFavorites();
+  }, []);
+
+  const checkIfRecipeIsInFavorites = async () => {
+    try {
+      const userId = auth().currentUser?.uid;
+      const favoritesRef = firebase.firestore().collection('favorites');
+
+      const existingFavorite = await favoritesRef
+        .where('userId', '==', userId)
+        .where('recipeData.title', '==', recipeData.title)
+        .get();
+
+      setIsFavorite(!existingFavorite.empty);
+    } catch (error) {
+      console.error('Error checking if recipe is in favorites:', error);
+    }
+  };
+
   const addRecipeToFavorites = async (recipeData) => {
     try {
       const userId = auth().currentUser?.uid;
       const favoritesRef = firebase.firestore().collection('favorites');
-      
+
       // Check if the recipe is already in favorites
       const existingFavorite = await favoritesRef
         .where('userId', '==', userId)
         .where('recipeData.title', '==', recipeData.title)
         .get();
-  
+
       // If the recipe is in favorites, remove it; otherwise, add it
       if (existingFavorite.empty) {
         await favoritesRef.add({
@@ -44,10 +70,12 @@ const DetailsModal = ({ onClose, recipeData, context }) => {
           recipeData: recipeData,
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         });
+        setIsFavorite(true); // Recipe added to favorites, set isFavorite to true
         console.log('Receta agregada a favoritos con éxito');
       } else {
         existingFavorite.forEach(async (doc) => {
           await doc.ref.delete();
+          setIsFavorite(false); // Recipe removed from favorites, set isFavorite to false
           console.log('Receta eliminada de favoritos con éxito');
         });
       }
@@ -69,9 +97,13 @@ const DetailsModal = ({ onClose, recipeData, context }) => {
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <View style={styles.topIconContainer}>
-          <TouchableOpacity onPress={() => addRecipeToFavorites(recipeData)}>
-            <Icon2 name="favorite" color="red" size={40} />
-          </TouchableOpacity>
+          {context === "home" || context === "favorite" ?(
+            <TouchableOpacity onPress={() => addRecipeToFavorites(recipeData)}>
+              <Icon2 name="favorite" color={isFavorite ? 'red' : 'black'} size={40} />
+            </TouchableOpacity>
+          ):(
+            <View></View>
+          )}
             <TouchableOpacity onPress={onClose}>
               <Icon name="closecircle" color="#000814" size={40} />
             </TouchableOpacity>
