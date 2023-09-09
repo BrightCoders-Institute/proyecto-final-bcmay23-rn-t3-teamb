@@ -13,37 +13,15 @@ export const HomeScreen = () => {
   const [data, setData] = useState([]);
   const [selectedTag, setSelectedTag] = useState(null);
   const image = require('../../images/icon.jpg');
-  const [lastUpdateTime, setLastUpdateTime] = useState(null); // Store last update time
   const [randomRecipe, setRandomRecipe] = useState(null); // Store the random recipe separately
 
-  const popularRecipeRefreshInterval = 10 * 60 * 60 * 1000;
 
   useEffect(() => {
     // Load 20 recipes for the rest of the component
     loadRecipes();
     // Load the initial random recipe
     loadRandomRecipe();
-
-    // Periodically check and update the popular recipe
-    const updateInterval = setInterval(() => {
-      checkAndUpdatePopularRecipe();
-    }, popularRecipeRefreshInterval);
-
-    // Cleanup interval on component unmount
-    return () => {
-      clearInterval(updateInterval);
-    };
   }, []);
-
-  const checkAndUpdatePopularRecipe = async () => {
-    const currentTime = new Date().getTime();
-    if (!lastUpdateTime || currentTime - lastUpdateTime >= popularRecipeRefreshInterval) {
-      // If there's no last update time or enough time has passed, fetch a new random recipe
-      await loadRandomRecipe();
-      // Update the last update time
-      setLastUpdateTime(currentTime);
-    }
-  };
 
   const loadRecipes = async () => {
     try {
