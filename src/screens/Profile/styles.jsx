@@ -4,16 +4,24 @@ export const styles = StyleSheet.create({
     profileContainer: {
         backgroundColor: "white"
     },
+    logOutContainer: {
+        backgroundColor: "#000814",
+        marginRight: 362,
+        marginLeft: 5,
+        marginTop: 5,
+        padding: 10,
+        borderRadius: 50
+    },
     imageContainer: {
         alignItems: "center",
-        paddingVertical: 15
+        paddingVertical: 15,
     },
     imageProfile: {
         width:Dimensions.get('window').width * 0.4,
         height:Dimensions.get('window').height * 0.2,
         borderWidth: 4,
         borderColor: "#003566",
-        borderRadius: 100
+        borderRadius: 100,
     },
     userName: {
         textAlign: "center",

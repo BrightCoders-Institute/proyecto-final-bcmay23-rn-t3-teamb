@@ -1,17 +1,19 @@
 import React from 'react'
-import { Text, View, ScrollView, Image } from 'react-native'
+import { Text, View, ScrollView, Image, Button, TouchableOpacity } from 'react-native'
 import { useState } from 'react';
 import ShowRecipe from '../../components/Recipe/ShowRecipe'
 import recipe from '../../assets/recipes.json';
 import {styles} from "./styles"
 import auth from '@react-native-firebase/auth';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { useEffect } from 'react';
 import { firebase } from "@react-native-firebase/firestore";
+import Icon from "react-native-vector-icons/MaterialIcons"
 
 export const ProfileScreen = () => {
   const [userData, setUserData] = useState({});
   const [userRecipes, setUserRecipes] = useState([]);
-  const imageProfile = require('../../images/profile.jpeg');
+  const imageProfile = require('../../images/chef-profile.png');
   const [userRecipesCount, setUserRecipesCount] = useState(0);
   const userId = auth().currentUser?.uid;
   const [userLikesCount, setUserLikesCount] = useState(0);
@@ -45,8 +47,16 @@ export const ProfileScreen = () => {
     setUserLikesCount(querySnapshot.size); // Update likes count
   });
 
+  async function signOut() {
+    await GoogleSignin.revokeAccess()
+    await GoogleSignin.signOut()
+  }
+
   return (
     <View style={styles.profileContainer}>
+      <TouchableOpacity onPress={() => { auth().signOut(); signOut() }} style={styles.logOutContainer}>
+        <Icon name="logout" color="yellow" size={25}/>      
+      </TouchableOpacity>
         <View style={styles.imageContainer}>
             <Image
                 source={imageProfile} 

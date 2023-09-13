@@ -14,6 +14,7 @@ export const HomeScreen = () => {
   const [selectedTag, setSelectedTag] = useState(null);
   const image = require('../../images/icon.jpg');
   const [randomRecipe, setRandomRecipe] = useState(null); // Store the random recipe separately
+  const [popularRecipes, setPopularRecipes] = useState(false);
 
 
   useEffect(() => {
@@ -41,20 +42,30 @@ export const HomeScreen = () => {
   };
 
   const loadRandomRecipe = async () => {
-    try {
-      const response = await API.get('/random', {
-        params: {
-          number: 1, // Request only 1 random recipe
-          addRecipeInformation: true,
-          instructionsRequired: true,
-          fillIngredients: true,
-          showIngredients: true,
-        },
-      });
-      setRandomRecipe(response.data.recipes[0]); // Store the random recipe separately
-    } catch (error) {
-      console.error('Error cargando receta:', error);
+    let randomRecipeData = null;
+    while (!randomRecipeData || randomRecipeData.aggregateLikes <= 50) {
+      try {
+        const response = await API.get('/random', {
+          params: {
+            number: 1, // Request only 1 random recipe
+            addRecipeInformation: true,
+            instructionsRequired: true,
+            fillIngredients: true,
+            showIngredients: true,
+          },
+        });
+        randomRecipeData = response.data.recipes[0]; // Almacena la receta aleatoria
+  
+        // Si la receta no cumple con el requisito, solicita otra
+        if (!randomRecipeData || randomRecipeData.likes <= 50) {
+          console.log('La receta no tiene suficientes likes, solicitando otra...');
+        }
+      } catch (error) {
+        console.error('Error cargando receta:', error);
+        break; // Sale del bucle en caso de error
+      }
     }
+    setRandomRecipe(randomRecipeData); // Almacena la receta aleatoria en el estado
   };
 
   const handleSortByTag = async (tag) => {

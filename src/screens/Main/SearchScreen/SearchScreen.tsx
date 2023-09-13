@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, SafeAreaView, ScrollView, Text, View } from 'react-native'
+import { Button, SafeAreaView, ScrollView, Text, View, StyleSheet, Image} from 'react-native'
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
@@ -13,22 +13,31 @@ import ShowRecipe from '../../../components/Recipe/ShowRecipe';
 export const SearchScreen = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [data, useData] = useState<RecipeElement[]>([]);
+  const image = require('../../../images/search-food.png');
   const onChangeSearch = (query: string) => setSearchQuery(query);
 
   useEffect(() => {
     if (searchQuery) {
-      API.get(`/complexSearch?query=${searchQuery}`)
+      // Define the parameters you want to pass
+      const params = {
+        query: searchQuery,
+        addRecipeInformation: true,
+        instructionsRequired: true,
+        fillIngredients: true,
+        showIngredients: true,
+      };
+  
+      // Make the API request using Axios
+      API.get('/complexSearch', { params })
         .then(response => {
           const { results } = response?.data;
           useData(results);
         })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
     }
   }, [searchQuery])
-
-  async function signOut() {
-    await GoogleSignin.revokeAccess()
-    await GoogleSignin.signOut()
-  }
 
   const handleClearInput = () => {
     useData([]);
@@ -43,19 +52,28 @@ export const SearchScreen = () => {
             onChangeText={onChangeSearch}
             value={searchQuery}
             mode='view'
-            style={{ backgroundColor: 'rgba(0, 53, 102,0.5)' }}
-            inputStyle={{ color: "black" }}
-            iconColor='black'
-            traileringIconColor="black"
+            style={{ backgroundColor: '#FFC300' }}
+            inputStyle={{ color: "#003566" }}
+            iconColor='#003566'
+            traileringIconColor="#003566"
             onClearIconPress={handleClearInput}
+            placeholderTextColor="#003566"
           />
 
           <View style={styles.Container}>
-            {
-              data && searchQuery ? data.map((item, index) => (<ShowRecipe titleKey={'title'} recipeData={item} context="home" key={index}/>)) : <Text>Search something</Text>
-            }
+          {
+            data && searchQuery ? (
+              data.map((item, index) => (
+                <ShowRecipe titleKey={'title'} recipeData={item} context="home" key={index} />
+              ))
+            ) : (
+              <View style={styles.searchPlaceholder}>
+                <Text style={styles.searchPlaceHolder}>Search something</Text>
+                <Image source={image} style={styles.image} />
+              </View>
+            )
+          }
           </View>
-          <Button title='LogOut' onPress={() => { auth().signOut(); signOut() }} />
         </View>
       </ScrollView>
     </SafeAreaView>
