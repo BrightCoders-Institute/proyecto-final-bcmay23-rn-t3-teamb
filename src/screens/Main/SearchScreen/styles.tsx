@@ -10,5 +10,20 @@ export const styles = StyleSheet.create({
         gap: 15,
         marginTop: 15,
         justifyContent: 'space-evenly'
+    },
+    searchPlaceHolder: {
+        color: "#003566",
+        fontSize: 40,
+        fontWeight: "800",
+        paddingBottom: 20,
+        paddingTop: 150,
+        fontFamily: ""
+    },
+    image: {
+        height: 250,
+        width: 250,
+    },
+    searchPlaceholder: {
+        alignItems: "center",
     }
 });

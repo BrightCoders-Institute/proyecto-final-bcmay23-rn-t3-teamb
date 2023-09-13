@@ -18,7 +18,6 @@ const PopularRecipe = ({ recipeData, titleKey, context }) => {
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
-  console.log(recipeData)
 
   const closeModal = () => {
     setModalVisible(false);
@@ -62,7 +61,6 @@ const PopularRecipe = ({ recipeData, titleKey, context }) => {
   const maxLength = 12;
   const Recipename =
   recipeTitle.length > maxLength ? recipeTitle.substring(0, maxLength) + '...' : recipeTitle;
-
 
   return (
     <View>

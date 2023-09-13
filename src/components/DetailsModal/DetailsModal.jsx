@@ -17,8 +17,6 @@ const DetailsModal = ({ onClose, recipeData, context }) => {
 
   const [isFavorite, setIsFavorite] = useState(false); // Track if the recipe is in favorites
 
-
-
   if (!firebase.apps.length) {
     firebase.initializeApp(yourFirebaseConfig);
   }
@@ -32,7 +30,6 @@ const DetailsModal = ({ onClose, recipeData, context }) => {
   }
 
   useEffect(() => {
-    // Check if the recipe is in favorites when the component mounts
     checkIfRecipeIsInFavorites();
   }, []);
 
@@ -57,25 +54,23 @@ const DetailsModal = ({ onClose, recipeData, context }) => {
       const userId = auth().currentUser?.uid;
       const favoritesRef = firebase.firestore().collection('favorites');
 
-      // Check if the recipe is already in favorites
       const existingFavorite = await favoritesRef
         .where('userId', '==', userId)
         .where('recipeData.title', '==', recipeData.title)
         .get();
 
-      // If the recipe is in favorites, remove it; otherwise, add it
       if (existingFavorite.empty) {
         await favoritesRef.add({
           userId: userId,
           recipeData: recipeData,
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         });
-        setIsFavorite(true); // Recipe added to favorites, set isFavorite to true
+        setIsFavorite(true); 
         console.log('Receta agregada a favoritos con éxito');
       } else {
         existingFavorite.forEach(async (doc) => {
           await doc.ref.delete();
-          setIsFavorite(false); // Recipe removed from favorites, set isFavorite to false
+          setIsFavorite(false); 
           console.log('Receta eliminada de favoritos con éxito');
         });
       }
@@ -83,8 +78,6 @@ const DetailsModal = ({ onClose, recipeData, context }) => {
       console.error('Error al agregar o eliminar la receta de favoritos:', error);
     }
   };
-
-  console.log(recipeData)
   
   const maxLength = 30;
   const recipeTitle = recipeData.title || recipeData.name || '';

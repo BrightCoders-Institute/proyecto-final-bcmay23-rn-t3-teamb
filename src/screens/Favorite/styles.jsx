@@ -11,8 +11,9 @@ export const styles = StyleSheet.create({
       paddingVertical: 25,
       paddingHorizontal: 30,
       backgroundColor: "#003566",
-      borderBottomLeftRadius: 25,
-      borderBottomRightRadius: 25
+      borderBottomLeftRadius: 30,
+      borderBottomRightRadius: 30,
+      textAlign: "center"
     },
     outerContainer: {
       height: 660, 

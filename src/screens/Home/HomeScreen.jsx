@@ -7,20 +7,17 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import {styles} from "./styles"
 import { API } from '../../database';
 import { MealTypes } from '../../constants/tags';
-
+import PopularRecipesCarousel from '../../components/carouselRecipe/popularRecipeCarousel';
 
 export const HomeScreen = () => {
   const [data, setData] = useState([]);
   const [selectedTag, setSelectedTag] = useState(null);
   const image = require('../../images/icon.jpg');
-  const [randomRecipe, setRandomRecipe] = useState(null); // Store the random recipe separately
-
+  const [popularRecipes, setPopularRecipes] = useState(false);
 
   useEffect(() => {
-    // Load 20 recipes for the rest of the component
     loadRecipes();
-    // Load the initial random recipe
-    loadRandomRecipe();
+    loadPopularRecipes();
   }, []);
 
   const loadRecipes = async () => {
@@ -40,20 +37,21 @@ export const HomeScreen = () => {
     }
   };
 
-  const loadRandomRecipe = async () => {
+  const loadPopularRecipes = async () => {
     try {
-      const response = await API.get('/random', {
+      const response = await API.get('/complexSearch', {
         params: {
-          number: 1, // Request only 1 random recipe
+          number: 5, 
           addRecipeInformation: true,
           instructionsRequired: true,
           fillIngredients: true,
           showIngredients: true,
+          minLikes: 50,
         },
       });
-      setRandomRecipe(response.data.recipes[0]); // Store the random recipe separately
+      setPopularRecipes(response.data.results); 
     } catch (error) {
-      console.error('Error cargando receta:', error);
+      console.error('Error cargando recetas populares:', error);
     }
   };
 
@@ -106,13 +104,11 @@ export const HomeScreen = () => {
     
       <View style={styles.popularrecipecontainer}>
         <View style={styles.populartext}>
-          <Text style={styles.recipedaytext}>Recipe of the day! </Text>
+          <Text style={styles.recipedaytext}>POPULAR RECIPES! </Text>
           <Icon name="greater-than" color="yellow" size={25}/>
           <Icon name="greater-than" color="yellow" size={25}/>
         </View>
-        {randomRecipe && (
-          <PopularRecipe recipeData={randomRecipe} context="home" titleKey="title" />
-        )}
+          <PopularRecipesCarousel recipesData={popularRecipes} />
       </View>
 
       <ScrollView horizontal style={styles.buttonscontainer}>
