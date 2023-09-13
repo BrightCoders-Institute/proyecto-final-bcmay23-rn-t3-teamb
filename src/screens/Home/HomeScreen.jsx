@@ -7,21 +7,17 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import {styles} from "./styles"
 import { API } from '../../database';
 import { MealTypes } from '../../constants/tags';
-
+import PopularRecipesCarousel from '../../components/carouselRecipe/popularRecipeCarousel';
 
 export const HomeScreen = () => {
   const [data, setData] = useState([]);
   const [selectedTag, setSelectedTag] = useState(null);
   const image = require('../../images/icon.jpg');
-  const [randomRecipe, setRandomRecipe] = useState(null); // Store the random recipe separately
   const [popularRecipes, setPopularRecipes] = useState(false);
 
-
   useEffect(() => {
-    // Load 20 recipes for the rest of the component
     loadRecipes();
-    // Load the initial random recipe
-    loadRandomRecipe();
+    loadPopularRecipes();
   }, []);
 
   const loadRecipes = async () => {
@@ -41,31 +37,22 @@ export const HomeScreen = () => {
     }
   };
 
-  const loadRandomRecipe = async () => {
-    let randomRecipeData = null;
-    while (!randomRecipeData || randomRecipeData.aggregateLikes <= 50) {
-      try {
-        const response = await API.get('/random', {
-          params: {
-            number: 1, // Request only 1 random recipe
-            addRecipeInformation: true,
-            instructionsRequired: true,
-            fillIngredients: true,
-            showIngredients: true,
-          },
-        });
-        randomRecipeData = response.data.recipes[0]; // Almacena la receta aleatoria
-  
-        // Si la receta no cumple con el requisito, solicita otra
-        if (!randomRecipeData || randomRecipeData.likes <= 50) {
-          console.log('La receta no tiene suficientes likes, solicitando otra...');
-        }
-      } catch (error) {
-        console.error('Error cargando receta:', error);
-        break; // Sale del bucle en caso de error
-      }
+  const loadPopularRecipes = async () => {
+    try {
+      const response = await API.get('/complexSearch', {
+        params: {
+          number: 5, 
+          addRecipeInformation: true,
+          instructionsRequired: true,
+          fillIngredients: true,
+          showIngredients: true,
+          minLikes: 50,
+        },
+      });
+      setPopularRecipes(response.data.results); 
+    } catch (error) {
+      console.error('Error cargando recetas populares:', error);
     }
-    setRandomRecipe(randomRecipeData); // Almacena la receta aleatoria en el estado
   };
 
   const handleSortByTag = async (tag) => {
@@ -117,13 +104,11 @@ export const HomeScreen = () => {
     
       <View style={styles.popularrecipecontainer}>
         <View style={styles.populartext}>
-          <Text style={styles.recipedaytext}>Recipe of the day! </Text>
+          <Text style={styles.recipedaytext}>POPULAR RECIPES! </Text>
           <Icon name="greater-than" color="yellow" size={25}/>
           <Icon name="greater-than" color="yellow" size={25}/>
         </View>
-        {randomRecipe && (
-          <PopularRecipe recipeData={randomRecipe} context="home" titleKey="title" />
-        )}
+          <PopularRecipesCarousel recipesData={popularRecipes} />
       </View>
 
       <ScrollView horizontal style={styles.buttonscontainer}>
