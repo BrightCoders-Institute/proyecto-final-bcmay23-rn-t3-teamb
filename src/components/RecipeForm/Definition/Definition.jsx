@@ -1,6 +1,6 @@
 import {React, useState} from 'react';
 import { useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, ToastAndroid  } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, ToastAndroid, ScrollView, KeyboardAvoidingView, Platform  } from 'react-native';
 import { connect, useDispatch } from 'react-redux';
 import { updateFormField, moveToNextPhase, updateFormPhase } from '../../../actions/actions';
 import { styles } from './styles';
@@ -78,8 +78,15 @@ const Definition = (props) => {
     validateForm();
   }, [recipe]);
   
+  const greyPlaceholderStyle = {
+    color: 'grey',
+  };
 
   return (
+  <ScrollView
+    contentContainerStyle={{ flexGrow: 1 }}
+    keyboardShouldPersistTaps="handled"
+  >
     <View style={styles.definitionContainer}>
       <Text style={styles.definitionPhase}>Definition</Text>
       <View style={styles.phaseIndicator}>
@@ -95,7 +102,7 @@ const Definition = (props) => {
           onChangeText={(text) => handleInputChange('name', text)}
         />
         <TouchableOpacity onPress={openImagePicker}>
-          <Text style={styles.imagePicker}>
+          <Text style={[styles.imagePicker, selectedImage ? null : greyPlaceholderStyle]}>
             {selectedImage ? (selectedImage.length > 45 ? `${selectedImage.substring(0, 45)}...` : selectedImage) : "Select Image"}
           </Text>
         </TouchableOpacity>
@@ -149,6 +156,8 @@ const Definition = (props) => {
 
       </View>
     </View>
+  </ScrollView>
+
   );
 };
 

@@ -172,10 +172,6 @@ const Finish = (props) => {
                   </View>
                 </Modal>
             </View>
-
-            <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>Continue</Text>
-            </TouchableOpacity>
         </View>
     );
 };

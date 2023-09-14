@@ -32,7 +32,8 @@ export const styles = StyleSheet.create({
         fontWeight: "600",
         backgroundColor: "white",
         paddingVertical: 2,
-        paddingHorizontal: 5
+        paddingHorizontal: 5,
+        borderRadius: 10
     },
     activePhase: {
         color: "white",

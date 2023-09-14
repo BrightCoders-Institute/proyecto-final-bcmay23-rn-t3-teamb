@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, ScrollView, Keyboard } from "react-native";
 import { connect, useDispatch } from 'react-redux';
 import Icon2 from "react-native-vector-icons/MaterialCommunityIcons";
 import { updateFormField, moveToNextPhase, updateFormPhase, goToSpecificPreviousPhase } from '../../../actions/actions';
@@ -99,7 +99,35 @@ const Ingredients = (props) => {
     ));
   };
 
+  const [scrollEnabled, setScrollEnabled] = useState(false);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setScrollEnabled(true);
+      }
+    );
+
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setScrollEnabled(false);
+      }
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+
   return (
+    <ScrollView
+    contentContainerStyle={{ flexGrow: 1 }}
+    keyboardShouldPersistTaps="handled"
+    scrollEnabled={scrollEnabled}
+    >
     <View style={styles.definitionContainer}>
       {currentPhase === 'ingredients' && (
         <TouchableOpacity onPress={handlePreviousPhase} style={styles.goBackContainer}>
@@ -144,6 +172,8 @@ const Ingredients = (props) => {
         </TouchableOpacity>
       </View>
     </View>
+    </ScrollView>
+
   );
 };
 
