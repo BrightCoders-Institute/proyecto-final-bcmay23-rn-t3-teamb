@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-evenly",
         backgroundColor: "#000814",
-        paddingVertical: 8
+        paddingVertical: 8,
     },
     phases: {
         color: "black",
@@ -24,7 +24,8 @@ export const styles = StyleSheet.create({
         fontWeight: "600",
         backgroundColor: "white",
         paddingVertical: 2,
-        paddingHorizontal: 5
+        paddingHorizontal: 5,
+        borderRadius: 10
     },
     activePhase: {
         color: "white",

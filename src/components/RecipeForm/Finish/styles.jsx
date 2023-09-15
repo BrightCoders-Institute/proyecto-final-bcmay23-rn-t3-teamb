@@ -35,7 +35,8 @@ export const styles = StyleSheet.create({
         fontWeight: "600",
         backgroundColor: "white",
         paddingVertical: 2,
-        paddingHorizontal: 5
+        paddingHorizontal: 5,
+        borderRadius: 10
     },
     activePhase: {
       color: "white",
@@ -108,7 +109,7 @@ export const styles = StyleSheet.create({
       },
       ingredientsContainer: {
         backgroundColor: "white",
-        borderRadius: 15,
+        borderRadius: 5,
         paddingBottom: 220
 
       },
@@ -129,7 +130,7 @@ export const styles = StyleSheet.create({
       },
       ingredientsDescription: {
         backgroundColor: "white",
-        borderRadius: 15,
+        borderRadius: 5,
         paddingHorizontal: 5,
         textAlign: "left",
         color: "black",
@@ -149,7 +150,7 @@ export const styles = StyleSheet.create({
       },
       ingredientsInstructions: {
         backgroundColor: "white",
-        borderRadius: 15,
+        borderRadius: 5,
         paddingHorizontal: 5,
         textAlign: "left",
         color: "black",
