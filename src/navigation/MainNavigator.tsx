@@ -20,7 +20,7 @@ const icons = {
 
 export function MainLayout() {
   return (
-    <MainStack.Navigator
+    <MainStack.Navigator initialRouteName="Home"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color }) => {
           let routName = route.name as keyof typeof icons;

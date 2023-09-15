@@ -50,6 +50,7 @@ export const ProfileScreen = () => {
   async function signOut() {
     await GoogleSignin.revokeAccess()
     await GoogleSignin.signOut()
+    navigation.navigate('Main');
   }
 
   return (
