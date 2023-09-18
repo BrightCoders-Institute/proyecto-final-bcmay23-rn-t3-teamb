@@ -18,38 +18,64 @@ export const ProfileScreen = () => {
   const userId = auth().currentUser?.uid;
   const [userLikesCount, setUserLikesCount] = useState(0);
 
-
   useEffect(() => {
-    if (userId) {
-      // Obtener los datos del usuario desde Firestore
-      const userRef = firebase.firestore().collection('users').doc(userId);
-      userRef.get().then((doc) => {
-        if (doc.exists) {
-          setUserData(doc.data());
-        }
-      });
-  
-      // Obtener las recetas del usuario desde Firestore
-      const recipesRef = firebase.firestore().collection('recipes').where('userId', '==', userId);
-      recipesRef.get().then((querySnapshot) => {
-        const recipesData = [];
-        querySnapshot.forEach((doc) => {
-          recipesData.push(doc.data());
+    const fetchUserData = () => {
+      if (userId) {
+        const userRef = firebase.firestore().collection('users').doc(userId);
+        userRef.onSnapshot((doc) => {
+          if (doc.exists) {
+            setUserData(doc.data());
+          }
         });
-        setUserRecipes(recipesData);
-        setUserRecipesCount(recipesData.length);
-      });
-    }
+      }
+    };
+
+    const fetchUserRecipes = () => {
+      if (userId) {
+        const recipesRef = firebase.firestore().collection('recipes').where('userId', '==', userId);
+        const unsubscribe = recipesRef.onSnapshot((querySnapshot) => {
+          const recipesData = [];
+          querySnapshot.forEach((doc) => {
+            recipesData.push(doc.data());
+          });
+          setUserRecipes(recipesData);
+          setUserRecipesCount(recipesData.length);
+        });
+
+        return () => unsubscribe();
+      }
+    };
+
+    fetchUserData();
+    fetchUserRecipes();
+
+    const likesRef = firebase.firestore().collection('favorites').where('userId', '==', userId);
+    likesRef.get().then((querySnapshot) => {
+      setUserLikesCount(querySnapshot.size); 
+    });
   }, [userId]);
+  
+  const fetchUserRecipes = () => {
+    const recipesRef = firebase.firestore().collection('recipes').where('userId', '==', userId);
+    recipesRef.get().then((querySnapshot) => {
+      const recipesData = [];
+      querySnapshot.forEach((doc) => {
+        recipesData.push(doc.data());
+      });
+      setUserRecipes(recipesData);
+      setUserRecipesCount(recipesData.length);
+    });
+  };
 
   const likesRef = firebase.firestore().collection('favorites').where('userId', '==', userId);
   likesRef.get().then((querySnapshot) => {
-    setUserLikesCount(querySnapshot.size); // Update likes count
+    setUserLikesCount(querySnapshot.size); 
   });
 
   async function signOut() {
     await GoogleSignin.revokeAccess()
     await GoogleSignin.signOut()
+    navigation.navigate('Main');
   }
 
   return (
@@ -82,7 +108,7 @@ export const ProfileScreen = () => {
             <View style={styles.row}>
               {userRecipes.map((recipeData, index) => (
                 <View key={index} style={styles.column}>
-                  <ShowRecipe recipeData={recipeData} context="profile" titleKey="name"/>
+                  <ShowRecipe recipeData={recipeData} context="profile" titleKey="name"  fetchUserRecipes={fetchUserRecipes}/>
                 </View>
               ))}
             </View>

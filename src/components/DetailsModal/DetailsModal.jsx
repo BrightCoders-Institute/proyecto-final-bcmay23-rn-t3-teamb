@@ -10,12 +10,10 @@ import auth from '@react-native-firebase/auth';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/firestore';
 import {styles} from "./styles" 
-import {addToFavorites, removeFromFavorites} from "../../actions/actions"
 
-const DetailsModal = ({ onClose, recipeData, context }) => {
+const DetailsModal = ({ onClose, recipeData, context, fetchUserRecipes  }) => {
   const [selectedDataType, setSelectedDataType] = useState('ingredients');
-
-  const [isFavorite, setIsFavorite] = useState(false); // Track if the recipe is in favorites
+  const [isFavorite, setIsFavorite] = useState(false);
 
   if (!firebase.apps.length) {
     firebase.initializeApp(yourFirebaseConfig);
@@ -66,12 +64,10 @@ const DetailsModal = ({ onClose, recipeData, context }) => {
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         });
         setIsFavorite(true); 
-        console.log('Receta agregada a favoritos con éxito');
       } else {
         existingFavorite.forEach(async (doc) => {
           await doc.ref.delete();
           setIsFavorite(false); 
-          console.log('Receta eliminada de favoritos con éxito');
         });
       }
     } catch (error) {
@@ -85,6 +81,36 @@ const DetailsModal = ({ onClose, recipeData, context }) => {
     recipeTitle.length > maxLength
       ? recipeTitle.substring(0, maxLength) + '...'
       : recipeTitle;
+
+  const handleDeleteRecipe = async () => {
+    await deleteRecipe();
+    fetchUserRecipes();
+    onClose();
+  };
+
+  const deleteRecipe = async () => {
+    try {
+      const userId = auth().currentUser?.uid;
+      const recipesRef = firebase.firestore().collection('recipes');
+  
+      const querySnapshot = await recipesRef
+        .where('userId', '==', userId)
+        .where('name', '==', recipeData.title)
+        .get();
+  
+      const deletePromises = [];
+  
+      querySnapshot.forEach((doc) => {
+        console.log('Document data:', doc.data()); 
+        deletePromises.push(doc.ref.delete());
+      });
+  
+      await Promise.all(deletePromises); 
+      console.log('Recipe deleted successfully');
+    } catch (error) {
+      console.error('Error deleting recipe:', error);
+    }
+  };
   
     return (
       <View style={styles.modalContainer}>
@@ -95,7 +121,9 @@ const DetailsModal = ({ onClose, recipeData, context }) => {
               <Icon2 name="favorite" color={isFavorite ? 'red' : 'black'} size={40} />
             </TouchableOpacity>
           ):(
-            <View></View>
+            <TouchableOpacity onPress={handleDeleteRecipe}>
+              <Icon name="delete" color="red" size={30} />
+            </TouchableOpacity>          
           )}
             <TouchableOpacity onPress={onClose}>
               <Icon name="closecircle" color="#000814" size={40} />

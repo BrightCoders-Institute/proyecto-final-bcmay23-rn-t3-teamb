@@ -6,7 +6,7 @@ import Modal from 'react-native-modal';
 import DetailsModal from '../DetailsModal/DetailsModal';
 import { TouchableOpacity } from 'react-native';
 
-const ShowRecipe = ({ recipeData, context, titleKey }) => {
+const ShowRecipe = ({ recipeData, context, titleKey, fetchUserRecipes }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   
   const toggleModal = () => {
@@ -41,7 +41,6 @@ const ShowRecipe = ({ recipeData, context, titleKey }) => {
     if (!data) {
       return null;
     }
-  
     const formattedData = {
       title: data.title || data.name || '', 
       image: data.image || '',
@@ -55,7 +54,6 @@ const ShowRecipe = ({ recipeData, context, titleKey }) => {
       ingredients: data.ingredients || data.extendedIngredients || [],
       likes: data.aggregateLikes || '', 
     };
-
     return formattedData;
   };
 
@@ -102,9 +100,8 @@ const ShowRecipe = ({ recipeData, context, titleKey }) => {
           </View>
         </View>
       </TouchableOpacity>
-
       <Modal isVisible={isModalVisible} onBackdropPress={closeModal} animationType='slide'>
-        <DetailsModal onClose={closeModal} recipeData={formatRecipeData(recipeData)} context={context} />
+        <DetailsModal onClose={closeModal} recipeData={formatRecipeData(recipeData)} context={context} fetchUserRecipes={fetchUserRecipes} />
       </Modal>
     </View>
   );

@@ -28,7 +28,7 @@ export const FavoriteScreen = () => {
 
   return (
     <View style={styles.favoriteContainer}>
-      <Text style={styles.title}>Favorites!</Text>
+      <Text style={styles.title}>Favorites</Text>
       <View style={styles.outerContainer}>
         <ScrollView>
           <View style={styles.container}>
